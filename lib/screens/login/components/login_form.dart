@@ -76,7 +76,7 @@ class _LoginFormState extends State<LoginForm> {
                     color: kDarkGreyColor,
                   ),
                   floatingLabelBehavior: FloatingLabelBehavior.always,
-                  prefixIcon: CustomIcon(svgIcon: "assets/icons/email_icon.svg"),
+                  prefixIcon: CustomIcon(svgIcon: "assets/icons/email_icon.svg", color: kDarkGreyColor,),
                 ),
               ),
             ),
@@ -113,7 +113,7 @@ class _LoginFormState extends State<LoginForm> {
                     color: kDarkGreyColor,
                   ),
                   floatingLabelBehavior: FloatingLabelBehavior.always,
-                  prefixIcon: const CustomIcon(svgIcon: "assets/icons/lock_icon.svg"),
+                  prefixIcon: const CustomIcon(svgIcon: "assets/icons/lock_icon.svg", color: kDarkGreyColor,),
                   suffixIcon: GestureDetector(
                     onTap: () {
                       setState(() {
@@ -124,6 +124,7 @@ class _LoginFormState extends State<LoginForm> {
                       svgIcon: _obscureText
                           ? "assets/icons/eye_off_icon.svg"
                           : "assets/icons/eye_on_icon.svg",
+                      color: kDarkGreyColor,
                     ),
                   ),
                 ),
@@ -158,7 +159,7 @@ class _LoginFormState extends State<LoginForm> {
                 if (_formKey.currentState!.validate()) {
                   _formKey.currentState!.save();
                   KeyboardUtil.hideKeyboard(context);
-                  Get.offNamed('/home');
+                  Get.offNamed("/navbar");
                 }
               },
               child: const Text(
