@@ -72,7 +72,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     color: kDarkGreyColor,
                   ),
                   floatingLabelBehavior: FloatingLabelBehavior.always,
-                  prefixIcon: CustomIcon(svgIcon: "assets/icons/person_icon.svg"),
+                  prefixIcon: CustomIcon(svgIcon: "assets/icons/person_icon.svg", color: kDarkGreyColor,),
                 ),
               ),
             ),
@@ -109,7 +109,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     color: kDarkGreyColor,
                   ),
                   floatingLabelBehavior: FloatingLabelBehavior.always,
-                  prefixIcon: CustomIcon(svgIcon: "assets/icons/email_icon.svg"),
+                  prefixIcon: CustomIcon(svgIcon: "assets/icons/email_icon.svg", color: kDarkGreyColor,),
                 ),
               ),
             ),
@@ -147,7 +147,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     color: kDarkGreyColor,
                   ),
                   floatingLabelBehavior: FloatingLabelBehavior.always,
-                  prefixIcon: const CustomIcon(svgIcon: "assets/icons/lock_icon.svg"),
+                  prefixIcon: const CustomIcon(svgIcon: "assets/icons/lock_icon.svg", color: kDarkGreyColor,),
                   suffixIcon: GestureDetector(
                     onTap: () {
                       setState(() {
@@ -158,6 +158,7 @@ class _RegisterFormState extends State<RegisterForm> {
                       svgIcon: _obscureText
                           ? "assets/icons/eye_off_icon.svg"
                           : "assets/icons/eye_on_icon.svg",
+                      color: kDarkGreyColor,
                     ),
                   ),
                 ),
@@ -197,7 +198,7 @@ class _RegisterFormState extends State<RegisterForm> {
                     color: kDarkGreyColor,
                   ),
                   floatingLabelBehavior: FloatingLabelBehavior.always,
-                  prefixIcon: const CustomIcon(svgIcon: "assets/icons/lock_icon.svg"),
+                  prefixIcon: const CustomIcon(svgIcon: "assets/icons/lock_icon.svg", color: kDarkGreyColor,),
                   suffixIcon: GestureDetector(
                     onTap: () {
                       setState(() {
@@ -208,6 +209,7 @@ class _RegisterFormState extends State<RegisterForm> {
                       svgIcon: _obscureText
                           ? "assets/icons/eye_off_icon.svg"
                           : "assets/icons/eye_on_icon.svg",
+                      color: kDarkGreyColor,
                     ),
                   ),
                 ),
