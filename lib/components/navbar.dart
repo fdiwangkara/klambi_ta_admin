@@ -69,7 +69,7 @@ class LandingPage extends StatelessWidget {
         ),
         BottomNavigationBarItem(
           icon: Icon(
-            Icons.inventory,
+            Icons.inventory_2,
             color: landingPageController.tabIndex.value == 1
                 ? kPrimaryColor
                 : kLightGreyColor,
