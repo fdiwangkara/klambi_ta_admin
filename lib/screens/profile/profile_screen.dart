@@ -14,6 +14,7 @@ class ProfileScreenView extends GetView<ProfileController> {
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kBackgroundColor,
+        surfaceTintColor: kBackgroundColor,
         leading: IconButton(
             onPressed: () {
               Get.offAndToNamed("/navbar", arguments: 0);

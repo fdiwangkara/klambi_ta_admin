@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:klambi_admin/screens/profile/edit_profile/components/photo_edit.dart';
+import 'package:klambi_admin/screens/profile/edit_profile/components/textfields.dart';
 import 'package:klambi_admin/screens/profile/edit_profile/edit_profile_controller.dart';
 
 import '../../../helper/constants.dart';
@@ -28,6 +30,17 @@ class EditProfileScreenView extends GetView<EditProfileController> {
           ),
         ),
         centerTitle: true,
+      ),
+      backgroundColor: kBackgroundColor,
+      body: SingleChildScrollView(
+        padding: const EdgeInsets.symmetric(vertical: 25),
+        child: Column(
+          children: [
+            PhotoEdit(),
+            SizedBox(height: 50),
+            Textfields(),
+          ],
+        ),
       ),
     );
   }
