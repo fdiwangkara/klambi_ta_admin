@@ -20,7 +20,7 @@ class ProfileMenu extends StatelessWidget {
         switch (result) {
           case 0:
             // Navigate to settings
-            print('Settings selected');
+            Get.offNamed("/profile");
             break;
           case 1:
             // Perform logout
@@ -35,7 +35,7 @@ class ProfileMenu extends StatelessWidget {
             child: Padding(
               padding:
                   const EdgeInsets.symmetric(horizontal: 8.0, vertical: 4.0),
-              child: Text('Settings'),
+              child: Text('Profile'),
             ),
           ),
         ),

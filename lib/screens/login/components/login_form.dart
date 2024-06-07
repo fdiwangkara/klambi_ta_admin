@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:klambi_admin/components/custom_icon.dart';
-import '../../../components/form_error.dart';
+import 'package:klambi_admin/components/form_error.dart';
+import 'package:klambi_admin/components/custom_textfield.dart';
 import '../../../helper/constants.dart';
 import '../../../helper/keyboard.dart';
 
@@ -46,7 +46,9 @@ class _LoginFormState extends State<LoginForm> {
           children: [
             Container(
               height: 70, // Increase the height to accommodate the error text
-              child: TextFormField(
+              child: CustomTextFormField(
+                hintText: "Masukkan Email",
+                svgIcon: "assets/icons/email_icon.svg",
                 keyboardType: TextInputType.emailAddress,
                 onSaved: (newValue) => email = newValue,
                 onChanged: (value) {
@@ -67,23 +69,14 @@ class _LoginFormState extends State<LoginForm> {
                   }
                   return null;
                 },
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.all(16),
-                  hintText: "Masukkan Email",
-                  hintStyle: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                    color: kDarkGreyColor,
-                  ),
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
-                  prefixIcon: CustomIcon(svgIcon: "assets/icons/email_icon.svg", color: kDarkGreyColor,),
-                ),
               ),
             ),
             const SizedBox(height: 10),
             Container(
               height: 70, // Increase the height to accommodate the error text
-              child: TextFormField(
+              child: CustomTextFormField(
+                hintText: "Masukkan Password",
+                svgIcon: "assets/icons/lock_icon.svg",
                 obscureText: _obscureText,
                 onSaved: (newValue) => password = newValue,
                 onChanged: (value) {
@@ -104,30 +97,12 @@ class _LoginFormState extends State<LoginForm> {
                   }
                   return null;
                 },
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(16),
-                  hintText: "Masukkan Password",
-                  hintStyle: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                    color: kDarkGreyColor,
-                  ),
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
-                  prefixIcon: const CustomIcon(svgIcon: "assets/icons/lock_icon.svg", color: kDarkGreyColor,),
-                  suffixIcon: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _obscureText = !_obscureText;
-                      });
-                    },
-                    child: CustomIcon(
-                      svgIcon: _obscureText
-                          ? "assets/icons/eye_off_icon.svg"
-                          : "assets/icons/eye_on_icon.svg",
-                      color: kDarkGreyColor,
-                    ),
-                  ),
-                ),
+                hasSuffixIcon: true,
+                onSuffixIconTap: () {
+                  setState(() {
+                    _obscureText = !_obscureText;
+                  });
+                },
               ),
             ),
             Row(

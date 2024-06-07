@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:klambi_admin/components/custom_icon.dart';
-import '../../../components/form_error.dart';
+import 'package:klambi_admin/components/form_error.dart';
+import 'package:klambi_admin/components/custom_textfield.dart';
 import '../../../helper/constants.dart';
 import '../../../helper/keyboard.dart';
 
@@ -48,7 +48,9 @@ class _RegisterFormState extends State<RegisterForm> {
           children: [
             Container(
               height: 70, // Increase the height to accommodate the error text
-              child: TextFormField(
+              child: CustomTextFormField(
+                hintText: "Masukkan Nama Admin",
+                svgIcon: "assets/icons/person_icon.svg",
                 onSaved: (newValue) => namaAdmin = newValue,
                 onChanged: (value) {
                   if (value.isNotEmpty) {
@@ -63,23 +65,14 @@ class _RegisterFormState extends State<RegisterForm> {
                   }
                   return null;
                 },
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.all(16),
-                  hintText: "Masukkan Nama Admin",
-                  hintStyle: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                    color: kDarkGreyColor,
-                  ),
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
-                  prefixIcon: CustomIcon(svgIcon: "assets/icons/person_icon.svg", color: kDarkGreyColor,),
-                ),
               ),
             ),
             const SizedBox(height: 10),
             Container(
               height: 70, // Increase the height to accommodate the error text
-              child: TextFormField(
+              child: CustomTextFormField(
+                hintText: "Masukkan Email",
+                svgIcon: "assets/icons/email_icon.svg",
                 keyboardType: TextInputType.emailAddress,
                 onSaved: (newValue) => email = newValue,
                 onChanged: (value) {
@@ -100,23 +93,14 @@ class _RegisterFormState extends State<RegisterForm> {
                   }
                   return null;
                 },
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.all(16),
-                  hintText: "Masukkan Email",
-                  hintStyle: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                    color: kDarkGreyColor,
-                  ),
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
-                  prefixIcon: CustomIcon(svgIcon: "assets/icons/email_icon.svg", color: kDarkGreyColor,),
-                ),
               ),
             ),
             const SizedBox(height: 10),
             Container(
               height: 70, // Increase the height to accommodate the error text
-              child: TextFormField(
+              child: CustomTextFormField(
+                hintText: "Masukkan Password",
+                svgIcon: "assets/icons/lock_icon.svg",
                 obscureText: _obscureText,
                 onSaved: (newValue) => password = newValue,
                 onChanged: (value) {
@@ -138,37 +122,21 @@ class _RegisterFormState extends State<RegisterForm> {
                   }
                   return null;
                 },
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(16),
-                  hintText: "Masukkan Password",
-                  hintStyle: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                    color: kDarkGreyColor,
-                  ),
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
-                  prefixIcon: const CustomIcon(svgIcon: "assets/icons/lock_icon.svg", color: kDarkGreyColor,),
-                  suffixIcon: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _obscureText = !_obscureText;
-                      });
-                    },
-                    child: CustomIcon(
-                      svgIcon: _obscureText
-                          ? "assets/icons/eye_off_icon.svg"
-                          : "assets/icons/eye_on_icon.svg",
-                      color: kDarkGreyColor,
-                    ),
-                  ),
-                ),
+                hasSuffixIcon: true,
+                onSuffixIconTap: () {
+                  setState(() {
+                    _obscureText = !_obscureText;
+                  });
+                },
               ),
             ),
             const SizedBox(height: 10),
             Container(
               height: 70,
-              child: TextFormField(
-                obscureText: _obscureText,
+              child: CustomTextFormField(
+                hintText: "Konfirmasi Password",
+                svgIcon: "assets/icons/lock_icon.svg",
+                obscureText: true, // Always obscure text for confirmation field
                 onSaved: (newValue) => confirmPassword = newValue,
                 onChanged: (value) {
                   if (value.isNotEmpty) {
@@ -189,30 +157,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   }
                   return null;
                 },
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(16),
-                  hintText: "Konfirmasi Password",
-                  hintStyle: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                    color: kDarkGreyColor,
-                  ),
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
-                  prefixIcon: const CustomIcon(svgIcon: "assets/icons/lock_icon.svg", color: kDarkGreyColor,),
-                  suffixIcon: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _obscureText = !_obscureText;
-                      });
-                    },
-                    child: CustomIcon(
-                      svgIcon: _obscureText
-                          ? "assets/icons/eye_off_icon.svg"
-                          : "assets/icons/eye_on_icon.svg",
-                      color: kDarkGreyColor,
-                    ),
-                  ),
-                ),
+                hasSuffixIcon: false, // No visibility toggle for confirmation field
               ),
             ),
             FormError(errors: errors),
