@@ -26,7 +26,7 @@ class ProductScreenView extends GetView<ProductController> {
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () {
-          // Define the action for the button here
+          Get.offNamed("/addProduct");
         },
         backgroundColor: kPrimaryColor,
         shape: const CircleBorder(),
