@@ -12,6 +12,7 @@ class CustomTextFormField extends StatelessWidget {
   final String? Function(String?)? validator;
   final bool hasSuffixIcon;
   final Function()? onSuffixIconTap;
+  final int? maxLines; // Add this property
 
   const CustomTextFormField({
     Key? key,
@@ -24,6 +25,7 @@ class CustomTextFormField extends StatelessWidget {
     this.validator,
     this.hasSuffixIcon = false,
     this.onSuffixIconTap,
+    this.maxLines = 1, // Default value is 1
   }) : super(key: key);
 
   @override
@@ -34,6 +36,7 @@ class CustomTextFormField extends StatelessWidget {
       onChanged: onChanged,
       onSaved: onSaved,
       validator: validator,
+      maxLines: maxLines, // Use the maxLines property
       decoration: InputDecoration(
         contentPadding: const EdgeInsets.all(16),
         hintText: hintText,
