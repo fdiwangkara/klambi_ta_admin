@@ -166,6 +166,27 @@ class AddForm extends StatelessWidget {
               maxLines: 100, // Allowing multiple lines
             ),
           ),
+          const SizedBox(height: 20),
+          RichText(
+            text: TextSpan(
+              text: 'Stok Awal',
+              style: const TextStyle(color: kDarkGreyColor, fontSize: 12, fontWeight: FontWeight.w500),
+              children: [
+                TextSpan(
+                  text: '*',
+                  style: const TextStyle(color: kDangerColor),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 5),
+          Container(
+            width: MediaQuery.of(context).size.width / 3, // Set the width for the stock field
+            child: const CustomTextFormField(
+              hintText: 'Stok Awal...',
+              keyboardType: TextInputType.number,
+            ),
+          ),
           const SizedBox(height: 50),
           SizedBox(
             width: width,

@@ -3,14 +3,15 @@ import 'package:get/get.dart';
 import 'package:klambi_admin/helper/constants.dart';
 import 'package:klambi_admin/screens/product/add_product/add_product_controller.dart';
 import 'package:klambi_admin/screens/product/add_product/components/add_form.dart';
-import 'package:klambi_admin/screens/product/product_controller.dart';
 
-class AddProductScreenView extends GetView<ProductController> {
-  const AddProductScreenView({super.key});
+import 'edit_product_controller.dart';
+
+class EditProductScreenView extends GetView<EditProductController> {
+  const EditProductScreenView({super.key});
 
   @override
   Widget build(BuildContext context) {
-    Get.put(AddProductController());
+    Get.put(EditProductController());
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kBackgroundColor,
@@ -20,7 +21,7 @@ class AddProductScreenView extends GetView<ProductController> {
             },
             icon: Icon(Icons.arrow_back)),
         title: Text(
-          "Tambah Produk",
+          "Edit Produk",
           textAlign: TextAlign.center,
           style: TextStyle(
             fontSize: 20,

@@ -37,13 +37,10 @@ class RegisterScreenView extends GetView<RegisterController> {
                   width: 150,
                 ),
               ),
-              SingleChildScrollView(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 50),
+              Center(
+                child: SingleChildScrollView(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(height: 20),
                       Center(
                         child: Image.asset(
                           'assets/images/logo_klambi.png',
@@ -66,6 +63,7 @@ class RegisterScreenView extends GetView<RegisterController> {
                       RegisterForm(),
                       SizedBox(height: 10),
                       HaveAccount(),
+                      SizedBox(height: 10),
                     ],
                   ),
                 ),

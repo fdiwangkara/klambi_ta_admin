@@ -28,8 +28,8 @@ class OptionList extends StatelessWidget {
 
     final List<String> optionRoutes = [
       '/editProfile',
-      '/chatCustomer',
-      '/logout',
+      '/chat',
+      '/login',
     ];
 
     return Column(
