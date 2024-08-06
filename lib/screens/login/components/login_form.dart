@@ -4,6 +4,7 @@ import 'package:klambi_admin/components/form_error.dart';
 import 'package:klambi_admin/components/custom_textfield.dart';
 import '../../../helper/constants.dart';
 import '../../../helper/keyboard.dart';
+import '../login_controller.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -18,7 +19,11 @@ class _LoginFormState extends State<LoginForm> {
   String? password;
   bool? remember = false;
   final List<String?> errors = [];
-  bool _obscureText = true; // State variable to manage password visibility
+  bool _obscureText = true;// State variable to manage password visibility
+  final loginController = Get.put(LoginController());
+  final TextEditingController ctrEmail = TextEditingController();
+  final TextEditingController ctrPassword = TextEditingController();
+
 
   void addError({String? error}) {
     if (!errors.contains(error)) {
@@ -50,7 +55,7 @@ class _LoginFormState extends State<LoginForm> {
                 hintText: "Masukkan Email",
                 svgIcon: "assets/icons/email_icon.svg",
                 keyboardType: TextInputType.emailAddress,
-                onSaved: (newValue) => email = newValue,
+                controller: ctrEmail,
                 onChanged: (value) {
                   if (value.isNotEmpty) {
                     removeError(error: kEmailNullError);
@@ -78,7 +83,7 @@ class _LoginFormState extends State<LoginForm> {
                 hintText: "Masukkan Password",
                 svgIcon: "assets/icons/lock_icon.svg",
                 obscureText: _obscureText,
-                onSaved: (newValue) => password = newValue,
+                controller: ctrPassword,
                 onChanged: (value) {
                   if (value.isNotEmpty) {
                     removeError(error: kPassNullError);
@@ -131,11 +136,10 @@ class _LoginFormState extends State<LoginForm> {
             const SizedBox(height: 25),
             ElevatedButton(
               onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  _formKey.currentState!.save();
-                  KeyboardUtil.hideKeyboard(context);
-                  Get.offNamed("/navbar");
-                }
+                loginController.loginAction(
+                  ctrEmail.text,
+                  ctrPassword.text,
+                );
               },
               child: const Text(
                 "Masuk",

@@ -12,7 +12,13 @@ class RegisterScreenView extends GetView<RegisterController> {
   @override
   Widget build(BuildContext context) {
     double height = MediaQuery.of(context).size.height;
-    Get.put(RegisterController());
+    final registerController = Get.put(RegisterController());
+    registerController.checkIfRegistered().then((isRegistered) {
+      if (isRegistered) {
+        Get.offAllNamed('/navbar');
+      }
+    });
+
     return Scaffold(
       backgroundColor: kBackgroundColor,
       body: GestureDetector(

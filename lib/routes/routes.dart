@@ -74,9 +74,7 @@ List<GetPage> routes = [
   ),
   GetPage(
     name: '/navbar',
-    page: () =>  LandingPage(),
+    page: () => LandingPage(),
     // binding: OrdersBinding(),
   ),
 ];
-
-

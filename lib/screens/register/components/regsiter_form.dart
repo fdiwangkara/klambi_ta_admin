@@ -4,6 +4,7 @@ import 'package:klambi_admin/components/form_error.dart';
 import 'package:klambi_admin/components/custom_textfield.dart';
 import '../../../helper/constants.dart';
 import '../../../helper/keyboard.dart';
+import '../register_controller.dart';
 
 class RegisterForm extends StatefulWidget {
   const RegisterForm({super.key});
@@ -22,6 +23,13 @@ class _RegisterFormState extends State<RegisterForm> {
   final List<String?> errors = [];
   bool _obscureText = true; // State variable to manage password visibility
 
+  // Controllers for email and password fields
+  final registerController = Get.put(RegisterController());
+  final TextEditingController ctrUsername = TextEditingController();
+  final TextEditingController ctrPassword = TextEditingController();
+  final TextEditingController ctrConfirmPass = TextEditingController();
+  final TextEditingController ctrEmail = TextEditingController();
+
   void addError({String? error}) {
     if (!errors.contains(error)) {
       setState(() {
@@ -39,6 +47,14 @@ class _RegisterFormState extends State<RegisterForm> {
   }
 
   @override
+  void dispose() {
+    // Dispose the controllers when the widget is disposed
+    ctrEmail.dispose();
+    ctrPassword.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25.0),
@@ -51,7 +67,7 @@ class _RegisterFormState extends State<RegisterForm> {
               child: CustomTextFormField(
                 hintText: "Masukkan Nama Admin",
                 svgIcon: "assets/icons/person_icon.svg",
-                onSaved: (newValue) => namaAdmin = newValue,
+                controller: ctrUsername,
                 onChanged: (value) {
                   if (value.isNotEmpty) {
                     removeError(error: kNamelNullError);
@@ -71,6 +87,7 @@ class _RegisterFormState extends State<RegisterForm> {
             Container(
               height: 70, // Increase the height to accommodate the error text
               child: CustomTextFormField(
+                controller: ctrEmail, // Add the email controller here
                 hintText: "Masukkan Email",
                 svgIcon: "assets/icons/email_icon.svg",
                 keyboardType: TextInputType.emailAddress,
@@ -99,6 +116,7 @@ class _RegisterFormState extends State<RegisterForm> {
             Container(
               height: 70, // Increase the height to accommodate the error text
               child: CustomTextFormField(
+                controller: ctrPassword, // Add the password controller here
                 hintText: "Masukkan Password",
                 svgIcon: "assets/icons/lock_icon.svg",
                 obscureText: _obscureText,
@@ -137,7 +155,7 @@ class _RegisterFormState extends State<RegisterForm> {
                 hintText: "Konfirmasi Password",
                 svgIcon: "assets/icons/lock_icon.svg",
                 obscureText: true, // Always obscure text for confirmation field
-                onSaved: (newValue) => confirmPassword = newValue,
+                controller: ctrConfirmPass,
                 onChanged: (value) {
                   if (value.isNotEmpty) {
                     removeError(error: kConfirmPassError);
@@ -164,16 +182,12 @@ class _RegisterFormState extends State<RegisterForm> {
             const SizedBox(height: 20),
             ElevatedButton(
               onPressed: () {
-                if (_formKey.currentState!.validate()) {
-                  // Manually validate confirmPassword again
-                  if (confirmPassword != password) {
-                    addError(error: kMatchPassError);
-                  } else {
-                    _formKey.currentState!.save();
-                    KeyboardUtil.hideKeyboard(context);
-                    Get.offNamed('/login');
-                  }
-                }
+                registerController.registerAction(
+                  ctrUsername.text,
+                  ctrEmail.text,
+                  ctrPassword.text,
+                  ctrConfirmPass.text,
+                );
               },
               child: const Text(
                 "Daftar",
