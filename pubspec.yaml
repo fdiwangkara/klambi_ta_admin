@@ -35,6 +35,8 @@ dependencies:
   flutter_svg: ^2.0.9
   shared_preferences: ^2.2.2
   fl_chart: ^0.68.0
+  image_picker: ^1.1.2
+  fluttertoast:
 
 dev_dependencies:
   flutter_test:

@@ -36,33 +36,35 @@ class LoginScreenView extends GetView<LoginController> {
                   width: 150,
                 ),
               ),
-              SingleChildScrollView(
-                child: Column(
-                  children: [
-                    SizedBox(height: height / 6),
-                    Center(
-                      child: Image.asset(
-                        'assets/images/logo_klambi.png',
-                        width: 50,
-                        height: 50,
-                      ),
-                    ),
-                    SizedBox(height: 10),
-                    Center(
-                      child: Text(
-                        'Masuk Admin',
-                        style: TextStyle(
-                          fontSize: 28,
-                          fontWeight: FontWeight.w600,
-                          color: kBlackColor,
+              Center(
+                child: SingleChildScrollView(
+                  child: Column(
+                    children: [
+                      Center(
+                        child: Image.asset(
+                          'assets/images/logo_klambi.png',
+                          width: 50,
+                          height: 50,
                         ),
                       ),
-                    ),
-                    SizedBox(height: 50),
-                    LoginForm(),
-                    SizedBox(height: 10),
-                    NoAccount(),
-                  ],
+                      SizedBox(height: 10),
+                      Center(
+                        child: Text(
+                          'Masuk Admin',
+                          style: TextStyle(
+                            fontSize: 28,
+                            fontWeight: FontWeight.w600,
+                            color: kBlackColor,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 50),
+                      LoginForm(),
+                      SizedBox(height: 10),
+                      NoAccount(),
+                      SizedBox(height: height / 10)
+                    ],
+                  ),
                 ),
               ),
             ],
