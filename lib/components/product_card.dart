@@ -1,18 +1,28 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import '../helper/constants.dart';
+import '../../models/product_response_model.dart';
+import 'package:intl/intl.dart';  // Import for number formatting
 
 class ProductCard extends StatelessWidget {
-  const ProductCard({super.key});
+  final Datum product;
+
+  const ProductCard({required this.product, super.key});
 
   @override
   Widget build(BuildContext context) {
     // Get the screen width
     final double width = MediaQuery.of(context).size.width;
 
+    // Function to format the price with dot separator
+    String formatPrice(int price) {
+      final formatter = NumberFormat('#,##0', 'en_US');
+      return formatter.format(price);
+    }
+
     return GestureDetector(
       onTap: () {
-        Get.offNamed('/editProduct');
+        Get.offNamed('/editProduct', arguments: product);
       },
       child: Container(
         width: width * 0.45, // Adjust the width according to screen width
@@ -30,9 +40,8 @@ class ProductCard extends StatelessWidget {
                 Padding(
                   padding: const EdgeInsets.only(top: 30),
                   child: Center(
-                    child: Image.asset(
-                      'assets/images/product_demo.png',
-                      // Replace with your image asset
+                    child: Image.network(
+                      product.imageUrl,
                       height: 120,
                       fit: BoxFit.cover,
                     ),
@@ -50,22 +59,21 @@ class ProductCard extends StatelessWidget {
                     ),
                   ),
                   child: Padding(
-                    padding:
-                        const EdgeInsets.only(top: 20, right: 10, left: 10),
+                    padding: const EdgeInsets.only(top: 20, right: 10, left: 10),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text(
-                          'Custom Baju Hitam Polos',
-                          style: TextStyle(
+                        Text(
+                          product.title.length > 35 ? '${product.title.substring(0, 35)}...' : product.title,
+                          style: const TextStyle(
                             color: kBlackColor,
                             fontWeight: FontWeight.w500,
                             fontSize: 14,
                           ),
                         ),
-                        const Text(
-                          'Rp. 99.000',
-                          style: TextStyle(
+                        Text(
+                          'Rp. ${formatPrice(product.price)}',
+                          style: const TextStyle(
                             color: kBlackColor,
                             fontWeight: FontWeight.w600,
                             fontSize: 16,
@@ -79,9 +87,9 @@ class ProductCard extends StatelessWidget {
                               color: kPrimaryColor,
                               size: 10,
                             ),
-                            const Text(
-                              '4.5 | 10 Stok | 5 Terjual',
-                              style: TextStyle(
+                            Text(
+                              '${product.rate} | 15 Stok | 10 Terjual',
+                              style: const TextStyle(
                                 color: kDarkGreyColor,
                                 fontWeight: FontWeight.w500,
                                 fontSize: 10,
@@ -99,16 +107,16 @@ class ProductCard extends StatelessWidget {
               top: 10,
               right: 10,
               child: Container(
-                width: 91,
-                height: 21,
+                width: 110,
+                height: 25,
                 decoration: BoxDecoration(
                   color: kPrimaryColor,
                   borderRadius: BorderRadius.circular(5),
                 ),
                 child: Center(
                   child: Text(
-                    'Lengan Panjang',
-                    style: TextStyle(
+                    product.category.toString().split('.').last,
+                    style: const TextStyle(
                       fontWeight: FontWeight.w500,
                       color: kWhiteColor,
                       fontSize: 10,

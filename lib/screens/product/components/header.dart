@@ -1,18 +1,21 @@
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
 import '../../../helper/constants.dart';
+import '../product_controller.dart';
 
 class Header extends StatelessWidget {
   const Header({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final ProductController productController = Get.find();
     double width = MediaQuery.of(context).size.width;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25),
       child: Row(
         children: [
-          Expanded(
+          const Expanded(
             child: Text(
               'Semua Produk',
               style: TextStyle(
@@ -32,32 +35,27 @@ class Header extends StatelessWidget {
               ),
               borderRadius: BorderRadius.circular(5),
             ),
-            child: DropdownButtonHideUnderline(
-              child: Center(
-                child: DropdownButton<String>(
-                  isExpanded: true,
-                  value: 'Semua Barang',
-                  items: <String>[
-                    'Semua Barang',
-                    'Lengan Panjang',
-                    'Lengan Pendek',
-                    'Oversize'
-                  ].map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Center(
-                        child: Text(value),
-                      ),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    // Handle dropdown value change
-                  },
-                  alignment: Alignment.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14,
-                    color: kBlackColor,
+            child: Obx(
+                  () => DropdownButtonHideUnderline(
+                child: Center(
+                  child: DropdownButton<String>(
+                    isExpanded: true,
+                    value: productController.selectedCategory.value,
+                    items: productController.categoryList.map<DropdownMenuItem<String>>((String value) {
+                      return DropdownMenuItem<String>(
+                        value: value,
+                        child: Center(
+                          child: Text(value),
+                        ),
+                      );
+                    }).toList(),
+                    onChanged: productController.onCategoryChanged,
+                    alignment: Alignment.center,
+                    style: const TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 14,
+                      color: kBlackColor,
+                    ),
                   ),
                 ),
               ),

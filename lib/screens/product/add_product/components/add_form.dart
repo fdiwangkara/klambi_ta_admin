@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
-import 'package:klambi_admin/components/custom_icon.dart';
-import 'package:klambi_admin/helper/constants.dart';
+import 'package:get/get.dart';
 import 'package:klambi_admin/components/custom_textfield.dart';
+import 'package:klambi_admin/helper/constants.dart';
+
+import '../add_product_controller.dart';
 
 class AddForm extends StatelessWidget {
   const AddForm({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final AddProductController controller = Get.put(AddProductController());
     double width = MediaQuery.of(context).size.width;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25),
       child: Column(
@@ -17,7 +21,11 @@ class AddForm extends StatelessWidget {
           RichText(
             text: TextSpan(
               text: 'Upload Foto Produk',
-              style: const TextStyle(color: kDarkGreyColor, fontSize: 12, fontWeight: FontWeight.w500,),
+              style: const TextStyle(
+                color: kDarkGreyColor,
+                fontSize: 12,
+                fontWeight: FontWeight.w500,
+              ),
               children: [
                 TextSpan(
                   text: '*',
@@ -28,9 +36,7 @@ class AddForm extends StatelessWidget {
           ),
           const SizedBox(height: 8),
           GestureDetector(
-            onTap: () {
-              // Handle onTap
-            },
+            onTap: () {},
             child: Container(
               width: MediaQuery.of(context).size.width,
               height: 206,
@@ -42,12 +48,9 @@ class AddForm extends StatelessWidget {
               child: Column(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  Icon(Icons.add_circle_outline_outlined, color: kPrimaryColor, size: 40),
+                  Icon(Icons.add_circle_outline_outlined,
+                      color: kPrimaryColor, size: 40),
                   const SizedBox(height: 8),
-                  Text(
-                    'Foto Barang',
-                    style: TextStyle(color: kBlackColor, fontSize: 14),
-                  ),
                 ],
               ),
             ),
@@ -56,7 +59,10 @@ class AddForm extends StatelessWidget {
           RichText(
             text: TextSpan(
               text: 'Nama Produk',
-              style: const TextStyle(color: kDarkGreyColor, fontSize: 12, fontWeight: FontWeight.w500),
+              style: const TextStyle(
+                  color: kDarkGreyColor,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500),
               children: [
                 TextSpan(
                   text: '*',
@@ -66,14 +72,18 @@ class AddForm extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 5),
-          const CustomTextFormField(
+          CustomTextFormField(
             hintText: 'Nama Produk...',
+            controller: controller.titleController,
           ),
           const SizedBox(height: 20),
           RichText(
             text: TextSpan(
               text: 'Harga Produk',
-              style: const TextStyle(color: kDarkGreyColor, fontSize: 12, fontWeight: FontWeight.w500),
+              style: const TextStyle(
+                  color: kDarkGreyColor,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500),
               children: [
                 TextSpan(
                   text: '*',
@@ -85,37 +95,20 @@ class AddForm extends StatelessWidget {
           const SizedBox(height: 5),
           Container(
             width: width / 2,
-            child: const CustomTextFormField(
+            child: CustomTextFormField(
               hintText: 'Harga Produk...',
               keyboardType: TextInputType.number,
-            ),
-          ),
-          const SizedBox(height: 20),
-          RichText(
-            text: TextSpan(
-              text: 'Potongan Harga',
-              style: const TextStyle(color: kDarkGreyColor, fontSize: 12, fontWeight: FontWeight.w500),
-              children: [
-                TextSpan(
-                  text: '*',
-                  style: const TextStyle(color: kDangerColor),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 5),
-          Container(
-            width: width / 2,
-            child: const CustomTextFormField(
-              hintText: 'Potongan Harga...',
-              keyboardType: TextInputType.number,
+              controller: controller.priceController,
             ),
           ),
           const SizedBox(height: 20),
           RichText(
             text: TextSpan(
               text: 'Kategori Produk',
-              style: const TextStyle(color: kDarkGreyColor, fontSize: 12, fontWeight: FontWeight.w500),
+              style: const TextStyle(
+                  color: kDarkGreyColor,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500),
               children: [
                 TextSpan(
                   text: '*',
@@ -125,30 +118,38 @@ class AddForm extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 5),
-          DropdownButtonFormField<String>(
-            items: const [
-              DropdownMenuItem(value: 'Lengan Pendek', child: Text('Lengan Pendek')),
-              DropdownMenuItem(value: 'Lengan Panjang', child: Text('Lengan Panjang')),
-              DropdownMenuItem(value: 'Oversize', child: Text('Oversize')),
-            ],
-            onChanged: (value) {
-              // Handle dropdown value change
-            },
-            decoration: InputDecoration(
-              contentPadding: const EdgeInsets.all(16),
-              hintStyle: const TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
-                color: kDarkGreyColor,
-              ),
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-            ),
-          ),
+          Obx(() => DropdownButtonFormField<String>(
+                value: controller.selectedCategory.value.isEmpty
+                    ? null
+                    : controller.selectedCategory.value,
+                items: const [
+                  DropdownMenuItem(
+                      value: 'Lengan Pendek', child: Text('Lengan Pendek')),
+                  DropdownMenuItem(
+                      value: 'Lengan Panjang', child: Text('Lengan Panjang')),
+                  DropdownMenuItem(value: 'Oversize', child: Text('Oversize')),
+                ],
+                onChanged: (value) {
+                  controller.selectedCategory.value = value!;
+                },
+                decoration: InputDecoration(
+                  contentPadding: const EdgeInsets.all(16),
+                  hintStyle: const TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                    color: kDarkGreyColor,
+                  ),
+                  floatingLabelBehavior: FloatingLabelBehavior.always,
+                ),
+              )),
           const SizedBox(height: 20),
           RichText(
             text: TextSpan(
               text: 'Deskripsi Produk',
-              style: const TextStyle(color: kDarkGreyColor, fontSize: 12, fontWeight: FontWeight.w500),
+              style: const TextStyle(
+                  color: kDarkGreyColor,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500),
               children: [
                 TextSpan(
                   text: '*',
@@ -159,11 +160,12 @@ class AddForm extends StatelessWidget {
           ),
           const SizedBox(height: 5),
           Container(
-            height: 200, // Adjusted height for the description field
-            child: const CustomTextFormField(
+            height: 200,
+            child: CustomTextFormField(
               hintText: 'Deskripsi Produk...',
               keyboardType: TextInputType.multiline,
-              maxLines: 100, // Allowing multiple lines
+              maxLines: 100,
+              controller: controller.descriptionController,
             ),
           ),
           const SizedBox(height: 50),
@@ -172,7 +174,7 @@ class AddForm extends StatelessWidget {
             height: 50,
             child: ElevatedButton(
               onPressed: () {
-                // Handle button press
+                controller.addProduct();
               },
               style: ElevatedButton.styleFrom(
                 backgroundColor: kPrimaryColor,
