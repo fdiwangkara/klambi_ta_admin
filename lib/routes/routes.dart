@@ -4,6 +4,8 @@ import 'package:klambi_admin/screens/home/home_binding.dart';
 import 'package:klambi_admin/screens/home/home_screen.dart';
 import 'package:klambi_admin/screens/login/login_binding.dart';
 import 'package:klambi_admin/screens/login/login_screen.dart';
+import 'package:klambi_admin/screens/orders/detail_orders/detail_orders_binding.dart';
+import 'package:klambi_admin/screens/orders/detail_orders/detail_orders_screen.dart';
 import 'package:klambi_admin/screens/orders/orders_binding.dart';
 import 'package:klambi_admin/screens/orders/orders_screen.dart';
 import 'package:klambi_admin/screens/product/add_product/add_product_binding.dart';
@@ -56,6 +58,11 @@ List<GetPage> routes = [
     name: '/orders',
     page: () => const OrdersScreenView(),
     binding: OrdersBinding(),
+  ),
+  GetPage(
+    name: '/detailOrders',
+    page: () => const DetailOrdersScreenView(),
+    binding: DetailOrdersBinding(),
   ),
   GetPage(
     name: '/profile',
