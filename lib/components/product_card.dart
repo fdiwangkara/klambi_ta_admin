@@ -50,7 +50,7 @@ class ProductCard extends StatelessWidget {
                 const Spacer(),
                 Container(
                   width: double.infinity,
-                  height: 115,
+                  height: 130,
                   decoration: BoxDecoration(
                     color: kWhiteColor,
                     borderRadius: const BorderRadius.only(
@@ -64,7 +64,7 @@ class ProductCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          product.title.length > 35 ? '${product.title.substring(0, 35)}...' : product.title,
+                          product.title,
                           style: const TextStyle(
                             color: kBlackColor,
                             fontWeight: FontWeight.w500,

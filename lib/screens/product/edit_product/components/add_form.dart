@@ -169,6 +169,7 @@ class _EditProductFormState extends State<EditProductForm> {
           ),
           const SizedBox(height: 100),
           Row(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               SizedBox(
                 width: width / 1.5,

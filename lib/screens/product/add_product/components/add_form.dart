@@ -152,7 +152,7 @@ class AddForm extends StatelessWidget {
               controller: controller.descriptionController,
             ),
           ),
-          const SizedBox(height: 50),
+          const SizedBox(height: 100),
           SizedBox(
             width: width,
             height: 50,

@@ -32,10 +32,58 @@ class DetailOrdersScreenView extends GetView<DetailOrdersController> {
       ),
       backgroundColor: kBackgroundColor,
       body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 25),
+        padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 20),
         child: Column(
           children: [
             Receipt(),
+            SizedBox(height: 150),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 1.5,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: () {
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: kSecondaryColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: Text(
+                      'Pesanan Selesai',
+                      style: TextStyle(
+                        color: kWhiteColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ),
+                SizedBox(width: 5),
+                SizedBox(
+                  width: MediaQuery.of(context).size.width / 5,
+                  height: 50,
+                  child: ElevatedButton(
+                    onPressed: () {
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: kDangerColor,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
+                    child: Icon(
+                      Icons.cancel_outlined,
+                      color: kWhiteColor,
+                      size: 24,
+                    ),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
