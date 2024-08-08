@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:klambi_admin/helper/constants.dart';
-import 'package:klambi_admin/screens/product/add_product/add_product_controller.dart';
-import 'package:klambi_admin/screens/product/add_product/components/add_form.dart';
-
+import '../../../models/product_response_model.dart';
+import 'components/add_form.dart';
 import 'edit_product_controller.dart';
 
 class EditProductScreenView extends GetView<EditProductController> {
@@ -36,7 +35,7 @@ class EditProductScreenView extends GetView<EditProductController> {
         padding: const EdgeInsets.symmetric(vertical: 25),
         child: Column(
           children: [
-            AddForm(),
+            EditProductForm(product: Get.arguments as Datum),
           ],
         ),
       ),

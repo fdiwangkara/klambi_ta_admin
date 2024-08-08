@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:klambi_admin/routes/routes.dart';
 import 'package:klambi_admin/screens/home/home_screen.dart';
 import 'package:klambi_admin/screens/orders/orders_screen.dart';
+import 'package:klambi_admin/screens/product/edit_product/edit_product_controller.dart';
 import 'package:klambi_admin/screens/product/product_screen.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'components/navbar.dart';
@@ -27,8 +28,11 @@ class MyApp extends StatelessWidget {
       title: 'Klambi App - Admin',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme(context),
+      initialRoute: isLoggedIn ? '/navbar' : '/login',
       getPages: routes,
-      initialRoute: isLoggedIn ? '/navbar' : '/login', // Use isLoggedIn to decide the initial route
+      initialBinding: BindingsBuilder(() {
+        Get.lazyPut<EditProductController>(() => EditProductController());
+      }),
     );
   }
 }
