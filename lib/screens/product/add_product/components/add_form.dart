@@ -20,7 +20,7 @@ class AddForm extends StatelessWidget {
         children: [
           RichText(
             text: TextSpan(
-              text: 'Upload Foto Produk',
+              text: 'Image URL',
               style: const TextStyle(
                 color: kDarkGreyColor,
                 fontSize: 12,
@@ -35,25 +35,9 @@ class AddForm extends StatelessWidget {
             ),
           ),
           const SizedBox(height: 8),
-          GestureDetector(
-            onTap: () {},
-            child: Container(
-              width: MediaQuery.of(context).size.width,
-              height: 206,
-              decoration: BoxDecoration(
-                color: kBackgroundColor,
-                border: Border.all(color: kLightGreyColor),
-                borderRadius: BorderRadius.circular(10),
-              ),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Icon(Icons.add_circle_outline_outlined,
-                      color: kPrimaryColor, size: 40),
-                  const SizedBox(height: 8),
-                ],
-              ),
-            ),
+          CustomTextFormField(
+            hintText: 'Enter Image URL...',
+            controller: controller.imageURLController,
           ),
           const SizedBox(height: 20),
           RichText(
@@ -119,29 +103,29 @@ class AddForm extends StatelessWidget {
           ),
           const SizedBox(height: 5),
           Obx(() => DropdownButtonFormField<String>(
-                value: controller.selectedCategory.value.isEmpty
-                    ? null
-                    : controller.selectedCategory.value,
-                items: const [
-                  DropdownMenuItem(
-                      value: 'Lengan Pendek', child: Text('Lengan Pendek')),
-                  DropdownMenuItem(
-                      value: 'Lengan Panjang', child: Text('Lengan Panjang')),
-                  DropdownMenuItem(value: 'Oversize', child: Text('Oversize')),
-                ],
-                onChanged: (value) {
-                  controller.selectedCategory.value = value!;
-                },
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(16),
-                  hintStyle: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                    color: kDarkGreyColor,
-                  ),
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
-                ),
-              )),
+            value: controller.selectedCategory.value.isEmpty
+                ? null
+                : controller.selectedCategory.value,
+            items: const [
+              DropdownMenuItem(
+                  value: 'Lengan Pendek', child: Text('Lengan Pendek')),
+              DropdownMenuItem(
+                  value: 'Lengan Panjang', child: Text('Lengan Panjang')),
+              DropdownMenuItem(value: 'Oversize', child: Text('Oversize')),
+            ],
+            onChanged: (value) {
+              controller.selectedCategory.value = value!;
+            },
+            decoration: InputDecoration(
+              contentPadding: const EdgeInsets.all(16),
+              hintStyle: const TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 16,
+                color: kDarkGreyColor,
+              ),
+              floatingLabelBehavior: FloatingLabelBehavior.always,
+            ),
+          )),
           const SizedBox(height: 20),
           RichText(
             text: TextSpan(

@@ -9,9 +9,12 @@ class AddProductController extends GetxController {
   final priceController = TextEditingController();
   final descriptionController = TextEditingController();
   final categoryController = TextEditingController();
+  final imageURLController = TextEditingController();
 
   final RxString selectedCategory = ''.obs;
   final RxBool isLoading = false.obs;
+
+  static const String placeholderImageUrl = 'https://via.placeholder.com/150';
 
   Future<void> addProduct() async {
     if (titleController.text.isEmpty ||
@@ -22,6 +25,20 @@ class AddProductController extends GetxController {
       return;
     }
 
+    String imageUrl = imageURLController.text.isEmpty ? placeholderImageUrl : imageURLController.text;
+
+    // Check if the image URL is valid
+    if (imageUrl != placeholderImageUrl) {
+      try {
+        final response = await http.get(Uri.parse(imageUrl));
+        if (response.statusCode != 200) {
+          imageUrl = placeholderImageUrl;
+        }
+      } catch (e) {
+        imageUrl = placeholderImageUrl;
+      }
+    }
+
     final url = Uri.parse('https://klambi.ta.rplrus.com/api/products');
 
     final productData = {
@@ -30,7 +47,7 @@ class AddProductController extends GetxController {
       'descripsi': descriptionController.text,
       'category': selectedCategory.value,
       'rate': 0, // Default value, change as needed
-      'image_url': 'https://via.placeholder.com/150', // Placeholder image URL, change as needed
+      'image_url': imageUrl,
       'created_at': DateTime.now().toIso8601String(),
       'updated_at': DateTime.now().toIso8601String(),
     };
@@ -64,5 +81,6 @@ class AddProductController extends GetxController {
     priceController.clear();
     descriptionController.clear();
     selectedCategory.value = '';
+    imageURLController.clear();
   }
 }
