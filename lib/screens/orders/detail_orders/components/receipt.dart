@@ -1,15 +1,26 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:klambi_admin/helper/constants.dart';
 
-import '../../../../helper/constants.dart';
+import '../../../../models/order_response_model.dart';
 
 class Receipt extends StatelessWidget {
-  const Receipt({super.key});
+  final Datum orderDetails;
+
+  const Receipt({super.key, required this.orderDetails});
 
   @override
   Widget build(BuildContext context) {
-    final double containerWidth = MediaQuery.of(context).size.width * 0.9; // Assuming 90% width for responsiveness
-    const double containerHeight = 535;
+    final double containerWidth = MediaQuery.of(context).size.width * 0.9;
+    const double containerHeight = 530;
+
+    // Create a NumberFormat object for Indonesian Rupiah
+    final NumberFormat currencyFormat = NumberFormat.currency(locale: 'id', symbol: 'Rp. ', decimalDigits: 0);
+
+    // Format the order date to show only the date without the time
+    final String formattedDate = DateFormat('dd MMM yyyy').format(orderDetails.order.orderTime.toLocal());
 
     return Center(
       child: Container(
@@ -25,7 +36,7 @@ class Receipt extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Order Id: 0938801249',
+              'Order Id: #${orderDetails.order.orderId}',
               style: TextStyle(
                 color: kPrimaryColor,
                 fontSize: 16,
@@ -38,8 +49,8 @@ class Receipt extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Estimasi Pengiriman',
+                const Text(
+                  'Tanggal:',
                   style: TextStyle(
                     color: kDarkGreyColor,
                     fontSize: 16,
@@ -47,8 +58,8 @@ class Receipt extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '25 Maret, 2024',
-                  style: TextStyle(
+                  formattedDate, // Format date
+                  style: const TextStyle(
                     color: kBlackColor,
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -59,9 +70,9 @@ class Receipt extends StatelessWidget {
             const SizedBox(height: 10),
             const Divider(color: kLightGreyColor),
             const SizedBox(height: 10),
-            const Text(
-              'Filemon Diwangkara',
-              style: TextStyle(
+            Text(
+              '${orderDetails.order.address.namaLengkap}',
+              style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
@@ -73,8 +84,8 @@ class Receipt extends StatelessWidget {
                 const SizedBox(width: 10),
                 Expanded(
                   child: Text(
-                    'Jl. Teratai, Besito Kulon, Vision Kos, Gebog, Besito, Kudus, Jawa Tengah',
-                    style: TextStyle(
+                    '${orderDetails.order.address.keterangan}, ${orderDetails.order.address.provinsi}',
+                    style: const TextStyle(
                       fontSize: 14,
                       fontWeight: FontWeight.w500,
                       color: kDarkGreyColor,
@@ -89,8 +100,8 @@ class Receipt extends StatelessWidget {
                 SvgPicture.asset('assets/icons/phone_icon.svg'),
                 const SizedBox(width: 10),
                 Text(
-                  '+62 - 813 - 1029 - 0838',
-                  style: TextStyle(
+                  '${orderDetails.order.address.nomorTelepon}',
+                  style: const TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
                     color: kDarkGreyColor,
@@ -104,8 +115,8 @@ class Receipt extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Pembayaran',
+                const Text(
+                  'Pembayaran:',
                   style: TextStyle(
                     color: kDarkGreyColor,
                     fontSize: 16,
@@ -113,8 +124,8 @@ class Receipt extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'E-Wallet (Gopay)',
-                  style: TextStyle(
+                  '${orderDetails.order.paymentMethod}',
+                  style: const TextStyle(
                     color: kSecondaryColor,
                     fontSize: 16,
                     fontWeight: FontWeight.w500,
@@ -126,7 +137,7 @@ class Receipt extends StatelessWidget {
             const Divider(color: kLightGreyColor),
             const SizedBox(height: 10),
             const Text(
-              'Rincican',
+              'Rincian',
               style: TextStyle(
                 color: kDarkGreyColor,
                 fontSize: 16,
@@ -137,8 +148,8 @@ class Receipt extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Pcs',
+                const Text(
+                  'Pcs:',
                   style: TextStyle(
                     color: kBlackColor,
                     fontSize: 14,
@@ -146,30 +157,8 @@ class Receipt extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '1',
-                  style: TextStyle(
-                    color: kBlackColor,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 5),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Subtotal',
-                  style: TextStyle(
-                    color: kBlackColor,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                Text(
-                  'Rp. 99.000',
-                  style: TextStyle(
+                  '${orderDetails.products.fold<int>(0, (sum, item) => sum + item.quantity)}',
+                  style: const TextStyle(
                     color: kBlackColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
@@ -181,8 +170,8 @@ class Receipt extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Diskon',
+                const Text(
+                  'Subtotal:',
                   style: TextStyle(
                     color: kBlackColor,
                     fontSize: 14,
@@ -190,30 +179,8 @@ class Receipt extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  '-Rp. 2.000',
-                  style: TextStyle(
-                    color: kBlackColor,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-              ],
-            ),
-            const SizedBox(height: 5),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'Biaya Pengiriman',
-                  style: TextStyle(
-                    color: kBlackColor,
-                    fontSize: 14,
-                    fontWeight: FontWeight.w500,
-                  ),
-                ),
-                Text(
-                  'Rp. 10.000',
-                  style: TextStyle(
+                  currencyFormat.format(orderDetails.products.fold<int>(0, (sum, item) => sum + item.price)), // Subtotal
+                  style: const TextStyle(
                     color: kBlackColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
@@ -225,8 +192,8 @@ class Receipt extends StatelessWidget {
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
-                Text(
-                  'Biaya Admin',
+                const Text(
+                  'Biaya Pengiriman:',
                   style: TextStyle(
                     color: kBlackColor,
                     fontSize: 14,
@@ -234,8 +201,8 @@ class Receipt extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'Rp. 2.000',
-                  style: TextStyle(
+                  currencyFormat.format(orderDetails.order.shippingFee), // Shipping Fee
+                  style: const TextStyle(
                     color: kBlackColor,
                     fontSize: 14,
                     fontWeight: FontWeight.w500,
@@ -243,11 +210,33 @@ class Receipt extends StatelessWidget {
                 ),
               ],
             ),
-            const SizedBox(height: 15),
+            const SizedBox(height: 5),
             Row(
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
+                const Text(
+                  'Biaya Admin:',
+                  style: TextStyle(
+                    color: kBlackColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
                 Text(
+                  currencyFormat.format(orderDetails.order.handlingFee), // Handling Fee
+                  style: const TextStyle(
+                    color: kBlackColor,
+                    fontSize: 14,
+                    fontWeight: FontWeight.w500,
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(height: 10),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Text(
                   'Total:',
                   style: TextStyle(
                     color: kPrimaryColor,
@@ -256,8 +245,8 @@ class Receipt extends StatelessWidget {
                   ),
                 ),
                 Text(
-                  'Rp. 199.000',
-                  style: TextStyle(
+                  currencyFormat.format(orderDetails.order.totalPrice), // Total Price
+                  style: const TextStyle(
                     color: kPrimaryColor,
                     fontSize: 16,
                     fontWeight: FontWeight.w600,

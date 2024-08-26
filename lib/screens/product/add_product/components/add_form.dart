@@ -2,15 +2,20 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:klambi_admin/components/custom_textfield.dart';
 import 'package:klambi_admin/helper/constants.dart';
-
 import '../add_product_controller.dart';
 
-class AddForm extends StatelessWidget {
+class AddForm extends StatefulWidget {
   const AddForm({super.key});
 
   @override
+  State<AddForm> createState() => _AddFormState();
+}
+
+class _AddFormState extends State<AddForm> {
+  final AddProductController controller = Get.put(AddProductController());
+
+  @override
   Widget build(BuildContext context) {
-    final AddProductController controller = Get.put(AddProductController());
     double width = MediaQuery.of(context).size.width;
 
     return Padding(
@@ -19,38 +24,89 @@ class AddForm extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           RichText(
-            text: TextSpan(
-              text: 'Image URL',
-              style: const TextStyle(
-                color: kDarkGreyColor,
-                fontSize: 12,
-                fontWeight: FontWeight.w500,
-              ),
-              children: [
-                TextSpan(
-                  text: '*',
-                  style: const TextStyle(color: kDangerColor),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 8),
-          CustomTextFormField(
-            hintText: 'Enter Image URL...',
-            controller: controller.imageURLController,
-          ),
-          const SizedBox(height: 20),
-          RichText(
-            text: TextSpan(
-              text: 'Nama Produk',
-              style: const TextStyle(
+            text: const TextSpan(
+              text: 'Upload Foto Produk',
+              style: TextStyle(
                   color: kDarkGreyColor,
                   fontSize: 12,
                   fontWeight: FontWeight.w500),
               children: [
                 TextSpan(
                   text: '*',
-                  style: const TextStyle(color: kDangerColor),
+                  style: TextStyle(color: kDangerColor),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 8),
+          GetBuilder<AddProductController>(
+            builder: (controller) => Container(
+              width: MediaQuery.of(context).size.width,
+              height: 206,
+              decoration: BoxDecoration(
+                color: kBackgroundColor,
+                border: Border.all(color: kLightGreyColor),
+                borderRadius: BorderRadius.circular(10),
+              ),
+              child: controller.selectedImage == null
+                  ? Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  IconButton(
+                    icon: Icon(
+                      Icons.add_circle_outline_outlined,
+                      size: 40,
+                      color: kPrimaryColor,
+                    ),
+                    onPressed: controller.pickImage,
+                  ),
+                  const Text(
+                    'Foto Barang',
+                    style: TextStyle(color: kBlackColor, fontSize: 14),
+                  ),
+                ],
+              )
+                  : Stack(
+                alignment: Alignment.center,
+                children: [
+                  Image.file(
+                    controller.selectedImage!,
+                    width: width,
+                    height: 206,
+                    fit: BoxFit.cover,
+                  ),
+                  Container(
+                    width: width,
+                    height: 206,
+                    color: Colors.black.withOpacity(0.5),
+                  ),
+                  TextButton(
+                    onPressed: controller.pickImage,
+                    child: const Text(
+                      'Ubah Foto',
+                      style: TextStyle(
+                        color: kWhiteColor,
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          RichText(
+            text: const TextSpan(
+              text: 'Nama Produk',
+              style: TextStyle(
+                  color: kDarkGreyColor,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500),
+              children: [
+                TextSpan(
+                  text: '*',
+                  style: TextStyle(color: kDangerColor),
                 ),
               ],
             ),
@@ -62,16 +118,16 @@ class AddForm extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           RichText(
-            text: TextSpan(
+            text: const TextSpan(
               text: 'Harga Produk',
-              style: const TextStyle(
+              style: TextStyle(
                   color: kDarkGreyColor,
                   fontSize: 12,
                   fontWeight: FontWeight.w500),
               children: [
                 TextSpan(
                   text: '*',
-                  style: const TextStyle(color: kDangerColor),
+                  style: TextStyle(color: kDangerColor),
                 ),
               ],
             ),
@@ -87,93 +143,131 @@ class AddForm extends StatelessWidget {
           ),
           const SizedBox(height: 20),
           RichText(
-            text: TextSpan(
-              text: 'Kategori Produk',
-              style: const TextStyle(
+            text: const TextSpan(
+              text: 'Stok Awal',
+              style: TextStyle(
                   color: kDarkGreyColor,
                   fontSize: 12,
                   fontWeight: FontWeight.w500),
               children: [
                 TextSpan(
                   text: '*',
-                  style: const TextStyle(color: kDangerColor),
-                ),
-              ],
-            ),
-          ),
-          const SizedBox(height: 5),
-          Obx(() => DropdownButtonFormField<String>(
-            value: controller.selectedCategory.value.isEmpty
-                ? null
-                : controller.selectedCategory.value,
-            items: const [
-              DropdownMenuItem(
-                  value: 'Lengan Pendek', child: Text('Lengan Pendek')),
-              DropdownMenuItem(
-                  value: 'Lengan Panjang', child: Text('Lengan Panjang')),
-              DropdownMenuItem(value: 'Oversize', child: Text('Oversize')),
-            ],
-            onChanged: (value) {
-              controller.selectedCategory.value = value!;
-            },
-            decoration: InputDecoration(
-              contentPadding: const EdgeInsets.all(16),
-              hintStyle: const TextStyle(
-                fontWeight: FontWeight.w500,
-                fontSize: 16,
-                color: kDarkGreyColor,
-              ),
-              floatingLabelBehavior: FloatingLabelBehavior.always,
-            ),
-          )),
-          const SizedBox(height: 20),
-          RichText(
-            text: TextSpan(
-              text: 'Deskripsi Produk',
-              style: const TextStyle(
-                  color: kDarkGreyColor,
-                  fontSize: 12,
-                  fontWeight: FontWeight.w500),
-              children: [
-                TextSpan(
-                  text: '*',
-                  style: const TextStyle(color: kDangerColor),
+                  style: TextStyle(color: kDangerColor),
                 ),
               ],
             ),
           ),
           const SizedBox(height: 5),
           Container(
-            height: 200,
+            width: width / 2,
             child: CustomTextFormField(
-              hintText: 'Deskripsi Produk...',
-              keyboardType: TextInputType.multiline,
-              maxLines: 100,
-              controller: controller.descriptionController,
+              hintText: 'Stok Awal...',
+              keyboardType: TextInputType.number,
+              controller: controller.stockController,
             ),
           ),
-          const SizedBox(height: 100),
-          SizedBox(
-            width: width,
-            height: 50,
-            child: ElevatedButton(
-              onPressed: () {
-                controller.addProduct();
+          const SizedBox(height: 20),
+          RichText(
+            text: const TextSpan(
+              text: 'Kategori Produk',
+              style: TextStyle(
+                  color: kDarkGreyColor,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500),
+              children: [
+                TextSpan(
+                  text: '*',
+                  style: TextStyle(color: kDangerColor),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 5),
+          GetBuilder<AddProductController>(
+            builder: (controller) => DropdownButtonFormField<String>(
+              value: controller.selectedCategory.value.isEmpty
+                  ? null
+                  : controller.selectedCategory.value,
+              items: const [
+                DropdownMenuItem(
+                    value: 'Lengan Pendek', child: Text('Lengan Pendek')),
+                DropdownMenuItem(
+                    value: 'Lengan Panjang', child: Text('Lengan Panjang')),
+                DropdownMenuItem(value: 'Oversize', child: Text('Oversize')),
+              ],
+              onChanged: (value) {
+                controller.selectedCategory.value = value!;
               },
-              style: ElevatedButton.styleFrom(
-                backgroundColor: kPrimaryColor,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-              ),
-              child: Text(
-                'Tambah Produk',
-                style: TextStyle(
-                  color: kWhiteColor,
+              decoration: InputDecoration(
+                contentPadding: const EdgeInsets.all(16),
+                hintStyle: const TextStyle(
+                  fontWeight: FontWeight.w500,
                   fontSize: 16,
-                  fontWeight: FontWeight.w600,
+                  color: kDarkGreyColor,
+                ),
+                floatingLabelBehavior: FloatingLabelBehavior.always,
+                filled: true,
+                fillColor: kBackgroundColor,
+                border: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(color: kLightGreyColor),
+                ),
+                focusedBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(10),
+                  borderSide: const BorderSide(color: kPrimaryColor),
                 ),
               ),
+            ),
+          ),
+          const SizedBox(height: 20),
+          RichText(
+            text: const TextSpan(
+              text: 'Deskripsi Produk',
+              style: TextStyle(
+                  color: kDarkGreyColor,
+                  fontSize: 12,
+                  fontWeight: FontWeight.w500),
+              children: [
+                TextSpan(
+                  text: '*',
+                  style: TextStyle(color: kDangerColor),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 5),
+          CustomTextFormField(
+            hintText: 'Deskripsi Produk...',
+            controller: controller.descriptionController,
+            maxLines: 3,
+          ),
+          const SizedBox(height: 50),
+          Center(
+            child: GetBuilder<AddProductController>(
+              builder: (controller) => ElevatedButton(
+                onPressed: controller.isLoading.value
+                    ? null
+                    : () async {
+                  await controller.addProduct();
+                },
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: kPrimaryColor,
+                  padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                ),
+                child: controller.isLoading.value
+                    ? const CircularProgressIndicator(
+                  color: kWhiteColor,
+                )
+                    : const Text(
+                  'Tambah Produk',
+                  style: TextStyle(
+                    color: kWhiteColor,
+                    fontSize: 16,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+
             ),
           ),
         ],

@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:klambi_admin/components/order_card.dart';
-import 'package:klambi_admin/screens/orders/components/order_list.dart';
-import 'package:klambi_admin/screens/orders/orders_controller.dart';
-
+import 'components/order_list.dart';
+import 'orders_controller.dart';
 import '../../helper/constants.dart';
 import 'components/header.dart';
 
@@ -12,18 +10,30 @@ class OrdersScreenView extends GetView<OrdersController> {
 
   @override
   Widget build(BuildContext context) {
-    Get.put(OrdersController());
-    return Scaffold(
-      backgroundColor: kBackgroundColor,
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 25),
-        child: Column(
-          children: [
-            const Header(),
-            SizedBox(height: 50),
-            OrderList(),
-          ],
-        ),
+    final OrdersController controller = Get.put(OrdersController());
+
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: kBackgroundColor,
+        body: Obx(() {
+          if (controller.isLoading.value) {
+            return Center(
+              child: CircularProgressIndicator(
+                color: kSecondaryColor,
+              ),
+            );
+          } else {
+            return SingleChildScrollView(
+              child: Column(
+                children: [
+                  const Header(),
+                  const SizedBox(height: 25),
+                  const OrderList(),
+                ],
+              ),
+            );
+          }
+        }),
       ),
     );
   }

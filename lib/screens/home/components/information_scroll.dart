@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:klambi_admin/components/custom_card.dart';
 
+import '../../orders/orders_controller.dart';
+
 class InformationScroll extends StatelessWidget {
-  const InformationScroll({super.key});
+  InformationScroll({super.key});
+
+  final OrdersController ordersController = Get.find<OrdersController>();
 
   @override
   Widget build(BuildContext context) {
@@ -12,7 +17,7 @@ class InformationScroll extends StatelessWidget {
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Text(
-            "Data Penjualan (Bulan Ini)",
+            "Data Penjualan (Saat Ini)",
             style: TextStyle(
               fontWeight: FontWeight.w600,
               fontSize: 14,
@@ -21,12 +26,17 @@ class InformationScroll extends StatelessWidget {
           SizedBox(height: 12),
           SingleChildScrollView(
             scrollDirection: Axis.horizontal,
-            child: Row(
-              children: const [
-                CustomCard(topText: 'Total pesanan', bottomText: '120 Pcs'),
-                CustomCard(topText: 'Total terkirim', bottomText: '58 Pcs'),
-              ],
-            ),
+            child: Obx(() {
+              int totalPesanan = ordersController.orders.length;
+              int totalTerkirim = ordersController.orders.where((order) => order.order.status == "pesanan_selesai").length;
+
+              return Row(
+                children: [
+                  CustomCard(topText: 'Total pesanan', bottomText: '$totalPesanan Pcs'),
+                  CustomCard(topText: 'Total terkirim', bottomText: '$totalTerkirim Pcs'),
+                ],
+              );
+            }),
           ),
         ],
       ),

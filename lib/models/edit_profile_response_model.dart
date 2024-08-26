@@ -1,25 +1,25 @@
 // To parse this JSON data, do
 //
-//     final loginAdmin = loginAdminFromJson(jsonString);
+//     final editModel = editModelFromJson(jsonString);
 
 import 'dart:convert';
 
-LoginAdmin loginAdminFromJson(String str) => LoginAdmin.fromJson(json.decode(str));
+EditModel editModelFromJson(String str) => EditModel.fromJson(json.decode(str));
 
-String loginAdminToJson(LoginAdmin data) => json.encode(data.toJson());
+String editModelToJson(EditModel data) => json.encode(data.toJson());
 
-class LoginAdmin {
+class EditModel {
   bool success;
   String message;
   Data data;
 
-  LoginAdmin({
+  EditModel({
     required this.success,
     required this.message,
     required this.data,
   });
 
-  factory LoginAdmin.fromJson(Map<String, dynamic> json) => LoginAdmin(
+  factory EditModel.fromJson(Map<String, dynamic> json) => EditModel(
     success: json["success"],
     message: json["message"],
     data: Data.fromJson(json["data"]),
@@ -34,24 +34,20 @@ class LoginAdmin {
 
 class Data {
   String name;
-  String email;
-  String token;
+  dynamic image;
 
   Data({
     required this.name,
-    required this.email,
-    required this.token,
+    required this.image,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
     name: json["name"],
-    email: json["email"],
-    token: json["token"],
+    image: json["image"],
   );
 
   Map<String, dynamic> toJson() => {
     "name": name,
-    "email": email,
-    "token": token,
+    "image": image,
   };
 }

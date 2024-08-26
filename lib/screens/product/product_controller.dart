@@ -9,6 +9,9 @@ class ProductController extends GetxController {
   RxList<String> categoryList = <String>[].obs;
   RxString selectedCategory = 'All'.obs;
   RxBool isLoading = false.obs;
+  RxInt totalStock = 0.obs;
+  RxInt totalReceive = 0.obs;
+  RxInt totalSold = 0.obs;
 
   @override
   void onInit() {
@@ -21,12 +24,11 @@ class ProductController extends GetxController {
     try {
       isLoading.value = true;
       final response = await http.get(
-          Uri.parse("https://klambi.ta.rplrus.com/api/category"));
+          Uri.parse("https://klambi.ta.rplrus.com/api/products/category/all"));
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         categoryList.value = List<String>.from(data['data']);
-        print(categoryList);
       } else {
         print("Failed to load categories. Status code: ${response.statusCode}");
       }
@@ -40,14 +42,15 @@ class ProductController extends GetxController {
   Future<void> loadProducts(String category) async {
     try {
       isLoading.value = true;
-      final categoryPath ="category/$category";
+      final categoryPath = "category/$category";
       final response = await http.get(
-          Uri.parse("https://klambi.ta.rplrus.com/api/$categoryPath"));
+          Uri.parse("https://klambi.ta.rplrus.com/api/products/$categoryPath"));
 
       if (response.statusCode == 200) {
         final data = json.decode(response.body);
         productList.value =
         List<Datum>.from(data['data'].map((x) => Datum.fromJson(x)));
+        calculateTotals();
       } else {
         print("Failed to load products. Status code: ${response.statusCode}");
       }
@@ -58,6 +61,22 @@ class ProductController extends GetxController {
     }
   }
 
+  void calculateTotals() {
+    int stock = 0;
+    int received = 0;
+    int sold = 0;
+
+    for (var item in productList) {
+      stock += item.stock;
+      sold += item.sold;
+      received += item.stock + item.sold; // Stock plus sold quantity
+    }
+
+    totalStock.value = stock;
+    totalReceive.value = received;
+    totalSold.value = sold;
+  }
+
   void onCategoryChanged(String? newCategory) {
     if (newCategory != null) {
       selectedCategory.value = newCategory;
@@ -65,4 +84,3 @@ class ProductController extends GetxController {
     }
   }
 }
-

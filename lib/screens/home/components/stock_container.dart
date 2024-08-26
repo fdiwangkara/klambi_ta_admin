@@ -1,38 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-
+import 'package:get/get.dart';
+import 'package:klambi_admin/screens/orders/orders_controller.dart';
 import '../../../helper/constants.dart';
+import '../../product/product_controller.dart';
 
 class StockContainer extends StatelessWidget {
   const StockContainer({super.key});
 
   @override
   Widget build(BuildContext context) {
-    final List<Map<String, String>> stockData = [
-      {
-        'icon': 'assets/icons/box_yellow_icon.svg',
-        'subtitle': 'Stok Tersedia',
-        'quantity': '20 Pcs',
-      },
-      {
-        'icon': 'assets/icons/box_green_icon.svg',
-        'subtitle': 'Stok Diterima',
-        'quantity': '35 Pcs',
-      },
-      {
-        'icon': 'assets/icons/box_red_icon.svg',
-        'subtitle': 'Stok Terjual',
-        'quantity': '15 Pcs',
-      },
-    ];
-
+    Get.put(ProductController());
+    final ProductController productController = Get.find<ProductController>();
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25),
       child: Container(
         width: MediaQuery.of(context).size.width,
         height: 226,
         decoration: BoxDecoration(
-          borderRadius: BorderRadius.all(
+          borderRadius: const BorderRadius.all(
             Radius.circular(10),
           ),
           border: Border.all(color: kLightGreyColor),
@@ -42,48 +28,95 @@ class StockContainer extends StatelessWidget {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
-                'Data Penjualan - saat ini',
+              const Text(
+                'Data Stok Barang - saat ini',
                 style: TextStyle(fontWeight: FontWeight.w500, fontSize: 14),
               ),
-              SizedBox(height: 30), // Add spacing between title and rows
+              const SizedBox(height: 30),
               Expanded(
-                child: Column(
-                  children: List.generate(stockData.length, (index) {
-                    return Column(
+                child: Obx(() => Column(
+                  children: [
+                    Row(
                       children: [
-                        Row(
-                          children: [
-                            SvgPicture.asset(
-                              stockData[index]['icon']!,
+                        SvgPicture.asset('assets/icons/box_yellow_icon.svg'),
+                        const SizedBox(width: 8),
+                        const Expanded(
+                          child: Text(
+                            'Stok Tersedia',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12,
+                              color: kDarkGreyColor,
                             ),
-                            SizedBox(width: 8),
-                            Expanded(
-                              child: Text(
-                                stockData[index]['subtitle']!,
-                                style: TextStyle(
-                                  fontWeight: FontWeight.w500,
-                                  fontSize: 12,
-                                  color: kDarkGreyColor,
-                                ),
-                              ),
-                            ),
-                            Spacer(),
-                            Text(
-                              stockData[index]['quantity']!,
-                              style: TextStyle(
-                                fontWeight: FontWeight.w500,
-                                fontSize: 14,
-                                color: kBlackColor,
-                              ),
-                            ),
-                          ],
+                          ),
                         ),
-                        Divider(color: kLightGreyColor),
+                        Text(
+                          '${productController.totalStock} Pcs',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                            color: kBlackColor,
+                          ),
+                        ),
                       ],
-                    );
-                  }),
-                ),
+                    ),
+                    const SizedBox(width: 10),
+                    const Divider(color: kLightGreyColor),
+                    const SizedBox(width: 10),
+                    Row(
+                      children: [
+                        SvgPicture.asset('assets/icons/box_green_icon.svg'),
+                        const SizedBox(width: 8),
+                        const Expanded(
+                          child: Text(
+                            'Stok Diterima',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12,
+                              color: kDarkGreyColor,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          '${productController.totalReceive} Pcs',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                            color: kBlackColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(width: 10),
+                    const Divider(color: kLightGreyColor),
+                    Row(
+                      children: [
+                        SvgPicture.asset('assets/icons/box_red_icon.svg'),
+                        const SizedBox(width: 8),
+                        const Expanded(
+                          child: Text(
+                            'Stok Terjual',
+                            style: TextStyle(
+                              fontWeight: FontWeight.w500,
+                              fontSize: 12,
+                              color: kDarkGreyColor,
+                            ),
+                          ),
+                        ),
+                        Text(
+                          '${productController.totalSold} Pcs',
+                          style: const TextStyle(
+                            fontWeight: FontWeight.w500,
+                            fontSize: 14,
+                            color: kBlackColor,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(width: 10),
+                    const Divider(color: kLightGreyColor),
+                  ],
+                )),
               ),
             ],
           ),

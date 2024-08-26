@@ -46,8 +46,8 @@ class LoginController extends GetxController {
         LoginAdmin loginResponseModel = loginAdminFromJson(response.body);
         loginAdminFromJson(response.body);
 
-        await prefs.setString("username", loginResponseModel.data.admin.name);
-        await prefs.setString("email", loginResponseModel.data.admin.email);
+        await prefs.setString("username", loginResponseModel.data.name);
+        await prefs.setString("email", loginResponseModel.data.email);
         await prefs.setString("token", loginResponseModel.data.token);
 
         String? savedToken = await prefs.getString("token");
