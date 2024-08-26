@@ -20,6 +20,8 @@ import 'package:klambi_admin/screens/profile/edit_profile/edit_profile_binding.d
 import 'package:klambi_admin/screens/profile/edit_profile/edit_profile_screen.dart';
 import 'package:klambi_admin/screens/profile/profile_binding.dart';
 import 'package:klambi_admin/screens/profile/profile_screen.dart';
+import 'package:klambi_admin/screens/profile/transactions/transaction_binding.dart';
+import 'package:klambi_admin/screens/profile/transactions/transaction_screen.dart';
 import 'package:klambi_admin/screens/register/register_binding.dart';
 import 'package:klambi_admin/screens/register/register_screen.dart';
 
@@ -78,6 +80,11 @@ List<GetPage> routes = [
     name: '/chat',
     page: () => const ChatScreenView(),
     binding: ChatBinding(),
+  ),
+  GetPage(
+    name: '/transaction',
+    page: () => const TransactionScreenView(),
+    binding: TransactionBinding(),
   ),
   GetPage(
     name: '/navbar',
