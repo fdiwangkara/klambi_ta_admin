@@ -14,21 +14,23 @@ class HomeScreenView extends GetView<HomeController> {
   @override
   Widget build(BuildContext context) {
     final HomeController homeController = Get.put(HomeController());
-    return Scaffold(
-      backgroundColor: kBackgroundColor,
-      body: SingleChildScrollView(
-        padding: EdgeInsets.symmetric(vertical: 20),
-        child: Column(
-          children: [
-            Header(),
-            Divider(color: kLightGreyColor),
-            SizedBox(height: 20),
-            InformationScroll(),
-            SizedBox(height: 20),
-            StockContainer(),
-            SizedBox(height: 20),
-            ChartGraph(),
-          ],
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: kBackgroundColor,
+        body: SingleChildScrollView(
+          padding: EdgeInsets.only(bottom: 20),
+          child: Column(
+            children: [
+              Header(),
+              Divider(color: kLightGreyColor),
+              SizedBox(height: 20),
+              InformationScroll(),
+              SizedBox(height: 20),
+              StockContainer(),
+              SizedBox(height: 20),
+              ChartGraph(),
+            ],
+          ),
         ),
       ),
     );

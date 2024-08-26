@@ -16,7 +16,7 @@ class ProductCard extends StatelessWidget {
 
     // Function to format the price with dot separator
     String formatPrice(int price) {
-      final formatter = NumberFormat('#,##0', 'en_US');
+      final formatter = NumberFormat('#,##0', 'id_ID');
       return formatter.format(price);
     }
 
@@ -25,7 +25,7 @@ class ProductCard extends StatelessWidget {
         Get.offNamed('/editProduct', arguments: product);
       },
       child: Container(
-        width: width * 0.45, // Adjust the width according to screen width
+        width: width * 0.45,
         height: 281,
         decoration: BoxDecoration(
           color: kSuperLightGreyColor,
@@ -41,7 +41,7 @@ class ProductCard extends StatelessWidget {
                   padding: const EdgeInsets.only(top: 30),
                   child: Center(
                     child: Image.network(
-                      product.imageUrl,
+                      "https://klambi.ta.rplrus.com/storage/" + product.imagee,
                       height: 120,
                       fit: BoxFit.cover,
                     ),
@@ -50,7 +50,7 @@ class ProductCard extends StatelessWidget {
                 const Spacer(),
                 Container(
                   width: double.infinity,
-                  height: 115,
+                  height: 130,
                   decoration: BoxDecoration(
                     color: kWhiteColor,
                     borderRadius: const BorderRadius.only(
@@ -64,7 +64,7 @@ class ProductCard extends StatelessWidget {
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
                         Text(
-                          product.title.length > 35 ? '${product.title.substring(0, 35)}...' : product.title,
+                          product.title,
                           style: const TextStyle(
                             color: kBlackColor,
                             fontWeight: FontWeight.w500,
@@ -88,7 +88,7 @@ class ProductCard extends StatelessWidget {
                               size: 10,
                             ),
                             Text(
-                              '${product.rate} | 15 Stok | 10 Terjual',
+                              '${product.rate} | ${product.stock} Stok | ${product.sold} Terjual',
                               style: const TextStyle(
                                 color: kDarkGreyColor,
                                 fontWeight: FontWeight.w500,
@@ -115,11 +115,12 @@ class ProductCard extends StatelessWidget {
                 ),
                 child: Center(
                   child: Text(
+                    // Assuming product.category contains the enum value, get the key from categoryValues
                     product.category.toString().split('.').last,
                     style: const TextStyle(
                       fontWeight: FontWeight.w500,
                       color: kWhiteColor,
-                      fontSize: 10,
+                      fontSize: 12,
                     ),
                   ),
                 ),

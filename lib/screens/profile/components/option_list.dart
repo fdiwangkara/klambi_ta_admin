@@ -13,25 +13,28 @@ class OptionList extends StatelessWidget {
     final List<IconData> optionIcons = [
       Icons.edit,
       Icons.chat,
+      Icons.attach_money,
       Icons.logout,
     ];
 
     final List<String> optionTitles = [
       "Edit Profile",
       "Chat Dengan Customer",
+      "Transaksi Masuk",
       "Logout",
     ];
 
     final List<Color> iconColors = [
       kPrimaryColor,
       kSecondaryColor,
+      kThirdColor,
       kDangerColor,
     ];
 
     final List<String> optionRoutes = [
       '/editProfile',
       '/chat',
-      // Remove the route for logout since we handle it separately
+      '/transactions',
     ];
 
     return Column(
@@ -39,7 +42,7 @@ class OptionList extends StatelessWidget {
       children: List.generate(optionTitles.length, (index) {
         return GestureDetector(
           onTap: () {
-            if (index == 2) {
+            if (index == 3) {
               // Show confirmation dialog for logout
               _showLogoutDialog(context);
             } else {
@@ -60,13 +63,16 @@ class OptionList extends StatelessWidget {
               children: [
                 Icon(optionIcons[index], color: iconColors[index]),
                 const SizedBox(width: 20),
-                Text(
-                  optionTitles[index],
-                  style: TextStyle(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w500,
+                Expanded( // Ensures text takes available space
+                  child: Text(
+                    optionTitles[index],
+                    style: TextStyle(
+                      fontSize: 18,
+                      fontWeight: FontWeight.w500,
+                    ),
                   ),
                 ),
+                Icon(Icons.arrow_forward_ios, color: kDarkGreyColor, size: 16,), // Right arrow icon
               ],
             ),
           ),

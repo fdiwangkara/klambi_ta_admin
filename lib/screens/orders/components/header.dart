@@ -1,70 +1,57 @@
 import 'package:flutter/material.dart';
-
+import 'package:get/get.dart';
 import '../../../helper/constants.dart';
+import '../orders_controller.dart';
 
 class Header extends StatelessWidget {
   const Header({super.key});
 
   @override
   Widget build(BuildContext context) {
-    double width = MediaQuery.of(context).size.width;
-    return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 25),
-      child: Row(
-        children: [
-          Expanded(
-            child: Text(
-              'Pesanan Baju',
-              style: TextStyle(
-                fontSize: 20,
-                fontWeight: FontWeight.w600,
-              ),
-            ),
-          ),
-          Container(
-            padding: const EdgeInsets.all(5),
-            width: width / 2.3,
-            height: 36,
-            decoration: BoxDecoration(
-              color: kBackgroundColor,
-              border: Border.all(
-                color: kLightGreyColor,
-              ),
-              borderRadius: BorderRadius.circular(5),
-            ),
-            child: DropdownButtonHideUnderline(
-              child: Center(
-                child: DropdownButton<String>(
-                  isExpanded: true,
-                  value: 'Semua Ekspedisi',
-                  items: <String>[
-                    'Semua Ekspedisi',
-                    'DHL',
-                    'SiCepat',
-                    'J&T'
-                  ].map<DropdownMenuItem<String>>((String value) {
-                    return DropdownMenuItem<String>(
-                      value: value,
-                      child: Center(
-                        child: Text(value),
+    final OrdersController controller = Get.find();
+
+    return Obx(
+          () => controller.statusList.isNotEmpty
+          ? DefaultTabController(
+        length: controller.statusList.length,
+        child: Column(
+          children: [
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 25),
+              child: Row(
+                children: [
+                  Expanded(
+                    child: Text(
+                      'Pesanan Baju',
+                      style: TextStyle(
+                        fontSize: 20,
+                        fontWeight: FontWeight.w600,
                       ),
-                    );
-                  }).toList(),
-                  onChanged: (String? newValue) {
-                    // Handle dropdown value change
-                  },
-                  alignment: Alignment.center,
-                  style: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 14,
-                    color: kBlackColor,
+                    ),
                   ),
-                ),
+                ],
               ),
             ),
-          ),
-        ],
-      ),
+            const SizedBox(height: 10),
+            SingleChildScrollView(
+              scrollDirection: Axis.horizontal,
+              child: TabBar(
+                isScrollable: true,
+                indicatorColor: kSecondaryColor,
+                labelColor: kSecondaryColor,
+                unselectedLabelColor: kDarkGreyColor,
+                tabs: controller.statusList
+                    .map((status) => Tab(text: status))
+                    .toList(),
+                onTap: (index) {
+                  controller.onStatusSelected(controller.statusList[index]);
+                },
+              ),
+            ),
+          ],
+        ),
+      )
+          : SizedBox.shrink(),
     );
   }
 }

@@ -12,27 +12,28 @@ class ProductScreenView extends GetView<ProductController> {
   @override
   Widget build(BuildContext context) {
     Get.put(ProductController());
-    return Scaffold(
-      backgroundColor: kBackgroundColor,
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 25),
-        child: Column(
-          children: [
-            const Header(),
-            const SizedBox(height: 50),
-            const ProductGrid(),
-          ],
+    return SafeArea(
+      child: Scaffold(
+        backgroundColor: kBackgroundColor,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              const Header(),
+              const SizedBox(height: 50),
+              const ProductGrid(),
+            ],
+          ),
         ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Get.offNamed("/addProduct");
-        },
-        backgroundColor: kPrimaryColor,
-        shape: const CircleBorder(),
-        child: const Icon(
-          Icons.add,
-          color: kWhiteColor,
+        floatingActionButton: FloatingActionButton(
+          onPressed: () {
+            Get.offNamed("/addProduct");
+          },
+          backgroundColor: kPrimaryColor,
+          shape: const CircleBorder(),
+          child: const Icon(
+            Icons.add,
+            color: kWhiteColor,
+          ),
         ),
       ),
     );

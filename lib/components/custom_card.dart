@@ -48,32 +48,6 @@ class CustomCard extends StatelessWidget {
                     color: kPrimaryColor,
                   ),
                 ),
-                SizedBox(width: 5), // Spacing between text and the container
-                Container(
-                  width: 47,
-                  height: 22,
-                  decoration: BoxDecoration(
-                    color: kSecondaryColor.withOpacity(0.25),
-                    borderRadius: BorderRadius.circular(10),
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      SvgPicture.asset(
-                        'assets/icons/arrow_up_icon.svg',
-                      ),
-                      SizedBox(width: 3),
-                      Text(
-                        '20%',
-                        style: TextStyle(
-                          fontWeight: FontWeight.w600,
-                          fontSize: 12,
-                          color: kSecondaryColor,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
               ],
             ),
           ],
