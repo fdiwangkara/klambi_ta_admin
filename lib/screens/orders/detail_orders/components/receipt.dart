@@ -38,7 +38,7 @@ class Receipt extends StatelessWidget {
             Text(
               'Order Id: #${orderDetails.order.id}',
               style: TextStyle(
-                color: kPrimaryColor,
+                color: kBlackColor,
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
               ),
