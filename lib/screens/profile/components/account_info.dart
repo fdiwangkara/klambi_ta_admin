@@ -22,68 +22,35 @@ class AccountInfo extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Profile photo with shimmer effect
-            editController.pickedImage.value != null
-                ? CircleAvatar(
-              radius: 50,
-              backgroundImage: FileImage(editController.pickedImage.value!),
-            )
-                : CircleAvatar(
-              radius: 50,
-              child: ClipOval(
-                child: editController.imageUrl.value != null
-                    ? Image.network(
-                  editController.imageUrl.value!,
-                  fit: BoxFit.cover,
-                  width: 100,
+            ClipOval(
+              child: AnimatedSwitcher(
+                duration: Duration(milliseconds: 300),
+                child: Container(
                   height: 100,
-                  loadingBuilder: (context, child, progress) {
-                    if (progress == null) return child;
-                    return Shimmer.fromColors(
-                      baseColor: Colors.grey[300]!,
-                      highlightColor: Colors.grey[100]!,
-                      child: Container(
-                        width: 100,
-                        height: 100,
-                        color: Colors.grey[300],
-                      ),
-                    );
-                  },
-                  errorBuilder: (context, error, stackTrace) {
-                    return Shimmer.fromColors(
-                      baseColor: Colors.grey[300]!,
-                      highlightColor: Colors.grey[100]!,
-                      child: Container(
-                        width: 100,
-                        height: 100,
-                        color: Colors.grey[300],
-                      ),
-                    );
-                  },
-                )
-                    : Shimmer.fromColors(
-                  baseColor: Colors.grey[300]!,
-                  highlightColor: Colors.grey[100]!,
-                  child: Container(
-                    width: 100,
-                    height: 100,
-                    color: Colors.grey[300],
+                  width: 100,
+                  key: ValueKey<String>(
+                      editController.imageUrl.value ?? ''),
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: editController.pickedImage.value !=
+                          null
+                          ? FileImage(
+                          editController.pickedImage.value!)
+                          : editController.imageUrl.value !=
+                          null
+                          ? NetworkImage(editController
+                          .imageUrl.value!)
+                          : AssetImage(
+                          "assets/images/dashboard/default_profile.png")
+                      as ImageProvider,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),
             ),
-            const SizedBox(height: 10),
-            // Account name with shimmer effect
-            editController.adminProfile.value.name.isNotEmpty
-                ? usernameText(username: editController.adminProfile.value.name)
-                : Shimmer.fromColors(
-              baseColor: Colors.grey[300]!,
-              highlightColor: Colors.grey[100]!,
-              child: Container(
-                width: 100,
-                height: 20,
-                color: Colors.grey[300],
-              ),
-            ),
+            SizedBox(height: 10),
+            usernameText(username: editController.userProfile.value.name),
             // Email
             emailText(email: profileController.email.value),
           ],

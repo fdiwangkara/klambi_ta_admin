@@ -15,14 +15,37 @@ class ProductScreenView extends GetView<ProductController> {
     return SafeArea(
       child: Scaffold(
         backgroundColor: kBackgroundColor,
-        body: SingleChildScrollView(
-          child: Column(
-            children: [
-              const Header(),
-              const SizedBox(height: 50),
-              const ProductGrid(),
-            ],
-          ),
+        body: Obx(
+              () {
+            if (controller.isLoading.value) {
+              return const Center(
+                child: CircularProgressIndicator(
+                  valueColor: AlwaysStoppedAnimation<Color>(kPrimaryColor),
+                  backgroundColor: kSecondaryColor,
+                ),
+              );
+            } else if (controller.productList.isEmpty) {
+              return const Center(
+                child: Text(
+                  'No products available',
+                  style: TextStyle(
+                    fontSize: 18,
+                    color: Colors.grey,
+                  ),
+                ),
+              );
+            } else {
+              return SingleChildScrollView(
+                child: Column(
+                  children: [
+                    const Header(),
+                    const SizedBox(height: 50),
+                    const ProductGrid(),
+                  ],
+                ),
+              );
+            }
+          },
         ),
         floatingActionButton: FloatingActionButton(
           onPressed: () {

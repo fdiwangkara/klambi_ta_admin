@@ -36,7 +36,7 @@ class Receipt extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              'Order Id: #${orderDetails.order.orderId}',
+              'Order Id: #${orderDetails.order.id}',
               style: TextStyle(
                 color: kPrimaryColor,
                 fontSize: 16,

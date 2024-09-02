@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:image_picker/image_picker.dart';
@@ -11,14 +10,12 @@ import '../../../models/edit_profile_response_model.dart';
 import '../profile_controller.dart';
 
 class EditProfileController extends GetxController {
-  final controller = Get.put(ProfileController());
   late SharedPreferences prefs;
   var pickedImage = Rxn<File>();
   var imageUrl = Rxn<String>();
-  RxString username = "".obs;
 
   var isLoading = false.obs;
-  var adminProfile = UserProfile(name: '', email: '', image: '').obs;
+  var userProfile = UserProfile(name: '', email: '', image: '').obs;
 
   final TextEditingController ctrName = TextEditingController();
 
@@ -29,7 +26,6 @@ class EditProfileController extends GetxController {
     loadImageFromPrefs();
   }
 
-
   Future<void> pickImage() async {
     final picker = ImagePicker();
     final pickedFile = await picker.pickImage(source: ImageSource.gallery);
@@ -37,38 +33,52 @@ class EditProfileController extends GetxController {
     if (pickedFile != null) {
       pickedImage.value = File(pickedFile.path);
       imageUrl.value = null;
-
-      // Simpan jalur file gambar ke SharedPreferences
       await prefs.setString('userImage', pickedFile.path);
     }
   }
 
   Future<void> loadUserProfile() async {
     isLoading(true);
-    prefs = await SharedPreferences.getInstance();
-    var token = prefs.getString("token");
+    try {
+      prefs = await SharedPreferences.getInstance();
+      var token = prefs.getString("token");
 
-    final response = await http.get(
-      Uri.parse('https://klambi.ta.rplrus.com/api/showProfile'),
-      headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer $token',
-      },
-    );
+      if (token == null || token.isEmpty) {
+        Get.snackbar('Error', 'Authentication token not found');
+        return;
+      }
 
-    if (response.statusCode == 200) {
-      print(token);
-      var data = ShowProfileResponse.fromJson(jsonDecode(response.body)).data;
-      adminProfile.value = data;
-      print(response.body);
-    } else {
-      print(response.body);
-      print('Failed to load profile');
-      print(ctrName.value);
+      final response = await http.get(
+        Uri.parse('https://klambi.ta.rplrus.com/api/showProfile'),
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': 'Bearer $token',
+        },
+      );
 
+      if (response.statusCode == 200) {
+        var data = ShowProfileResponse.fromJson(jsonDecode(response.body)).data;
+        userProfile.value = data;
+        ctrName.text = data.name;
+        imageUrl.value = data.image;
+      } else if (response.statusCode == 401) {
+        Get.snackbar('Unauthorized', 'Please log in again.');
+        // Handle token refresh or user logout here if necessary
+      } else {
+        print('Failed to load profile with status code: ${response.statusCode}');
+        print('Response body: ${response.body}');
+        Get.snackbar('Error', 'Failed to load profile');
+      }
+    } catch (e) {
+      print('An error occurred while loading the profile: $e');
+      Get.snackbar('Error', 'An unexpected error occurred');
+    } finally {
+      isLoading(false);
     }
-    isLoading(false);
   }
+
+
+
 
   Future<void> updateProfile(String name, File? imageFile) async {
     isLoading(true);
@@ -98,24 +108,24 @@ class EditProfileController extends GetxController {
 
     if (response.statusCode == 200) {
       var responseData = await http.Response.fromStream(response);
-      var updatedData = EditModel.fromJson(jsonDecode(responseData.body)).data;
-      adminProfile.value = UserProfile(
+      var updatedData = ShowProfileResponse.fromJson(jsonDecode(responseData.body)).data;
+      userProfile.value = UserProfile(
         name: updatedData.name,
-        email: adminProfile.value.email,
-        image: updatedData.image,
+        email: userProfile.value.email,
+        image: updatedData.image, // This might be null, which is now acceptable
       );
-      Get.snackbar("Success", "Profil Berhasil Diubah!");
     } else {
-      Get.snackbar("Failed", "Profil Gagal Diubah!");
+      print('Failed to update profile');
     }
     isLoading(false);
   }
+
 
   void loadImageFromPrefs() async {
     prefs = await SharedPreferences.getInstance();
     var savedImagePath = prefs.getString('userImage');
     if (savedImagePath != null && savedImagePath.isNotEmpty) {
-      pickedImage.value = File(savedImagePath); // Load image from file
+      pickedImage.value = File(savedImagePath);
     }
   }
 }

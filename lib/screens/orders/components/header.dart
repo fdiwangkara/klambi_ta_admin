@@ -23,7 +23,7 @@ class Header extends StatelessWidget {
                   Expanded(
                     child: Text(
                       'Pesanan Baju',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 20,
                         fontWeight: FontWeight.w600,
                       ),
@@ -40,9 +40,11 @@ class Header extends StatelessWidget {
                 indicatorColor: kSecondaryColor,
                 labelColor: kSecondaryColor,
                 unselectedLabelColor: kDarkGreyColor,
-                tabs: controller.statusList
-                    .map((status) => Tab(text: status))
-                    .toList(),
+                tabs: controller.statusList.map((status) {
+                  // Replace underscores with spaces and capitalize the text
+                  final formattedText = GetStringUtils(status.replaceAll('_', ' ')).capitalize!;
+                  return Tab(text: formattedText);
+                }).toList(),
                 onTap: (index) {
                   controller.onStatusSelected(controller.statusList[index]);
                 },
@@ -51,7 +53,14 @@ class Header extends StatelessWidget {
           ],
         ),
       )
-          : SizedBox.shrink(),
+          : const SizedBox.shrink(),
     );
+  }
+}
+
+extension StringExtension on String {
+  String get capitalize {
+    if (isEmpty) return this;
+    return this[0].toUpperCase() + substring(1).toLowerCase();
   }
 }

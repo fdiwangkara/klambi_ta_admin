@@ -37,7 +37,7 @@ class ProfileScreenView extends GetView<ProfileController> {
         child: Column(
           children: [
             AccountInfo(),
-            SizedBox(height: 50),
+            SizedBox(height: 25),
             OptionList(),
           ],
         ),

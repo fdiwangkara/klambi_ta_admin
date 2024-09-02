@@ -133,7 +133,7 @@ class _AddFormState extends State<AddForm> {
             ),
           ),
           const SizedBox(height: 5),
-          Container(
+          SizedBox(
             width: width / 2,
             child: CustomTextFormField(
               hintText: 'Harga Produk...',
@@ -158,7 +158,7 @@ class _AddFormState extends State<AddForm> {
             ),
           ),
           const SizedBox(height: 5),
-          Container(
+          SizedBox(
             width: width / 2,
             child: CustomTextFormField(
               hintText: 'Stok Awal...',
@@ -206,15 +206,17 @@ class _AddFormState extends State<AddForm> {
                   color: kDarkGreyColor,
                 ),
                 floatingLabelBehavior: FloatingLabelBehavior.always,
-                filled: true,
-                fillColor: kBackgroundColor,
-                border: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: kLightGreyColor),
+                enabledBorder: OutlineInputBorder(
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: const BorderSide(
+                    color: kLightGreyColor,
+                  ),
                 ),
                 focusedBorder: OutlineInputBorder(
-                  borderRadius: BorderRadius.circular(10),
-                  borderSide: const BorderSide(color: kPrimaryColor),
+                  borderRadius: BorderRadius.circular(8),
+                  borderSide: const BorderSide(
+                    color: kPrimaryColor,
+                  ),
                 ),
               ),
             ),
@@ -239,24 +241,30 @@ class _AddFormState extends State<AddForm> {
           CustomTextFormField(
             hintText: 'Deskripsi Produk...',
             controller: controller.descriptionController,
-            maxLines: 3,
+            maxLines: 5,
           ),
-          const SizedBox(height: 50),
+          const SizedBox(height: 30),
           Center(
-            child: GetBuilder<AddProductController>(
-              builder: (controller) => ElevatedButton(
-                onPressed: controller.isLoading.value
+            child: Obx(
+                  () => ElevatedButton(
+                onPressed: controller.isAdding.value
                     ? null
                     : () async {
                   await controller.addProduct();
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: kPrimaryColor,
-                  padding: const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
+                  padding:
+                  const EdgeInsets.symmetric(horizontal: 50, vertical: 15),
                 ),
-                child: controller.isLoading.value
-                    ? const CircularProgressIndicator(
-                  color: kWhiteColor,
+                child: controller.isAdding.value
+                    ? const SizedBox(
+                  width: 24,
+                  height: 24,
+                  child: CircularProgressIndicator(
+                    color: kWhiteColor,
+                    strokeWidth: 3.0,
+                  ),
                 )
                     : const Text(
                   'Tambah Produk',
@@ -267,9 +275,9 @@ class _AddFormState extends State<AddForm> {
                   ),
                 ),
               ),
-
             ),
           ),
+          const SizedBox(height: 30),
         ],
       ),
     );

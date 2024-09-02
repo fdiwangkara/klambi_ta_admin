@@ -14,6 +14,7 @@ class AddProductController extends GetxController {
 
   final RxString selectedCategory = ''.obs;
   final RxBool isLoading = false.obs;
+  final RxBool isAdding = false.obs;
   File? selectedImage;
 
   Future<void> pickImage() async {
@@ -34,6 +35,8 @@ class AddProductController extends GetxController {
       Get.snackbar('Error', 'All fields are required');
       return;
     }
+
+    isAdding(true); // Set isAdding to true when starting the process
 
     final url = Uri.parse('https://klambi.ta.rplrus.com/api/products');
     isLoading(true);
@@ -82,6 +85,7 @@ class AddProductController extends GetxController {
     } catch (e) {
       Get.snackbar('Error', e.toString());
     } finally {
+      isAdding(false); // Set isAdding to false when the process finishes
       isLoading(false);
     }
   }

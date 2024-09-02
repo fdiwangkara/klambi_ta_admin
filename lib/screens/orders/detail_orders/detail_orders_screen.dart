@@ -16,13 +16,14 @@ class DetailOrdersScreenView extends GetView<DetailOrdersController> {
 
   @override
   Widget build(BuildContext context) {
-    final Datum orderDetails = Get.arguments as Datum; // Retrieve the passed order object
+    final Datum orderDetails =
+        Get.arguments as Datum; // Retrieve the passed order object
 
     controller.fetchOrderData(orderDetails.order.id);
 
     // Create a NumberFormat object for Indonesian Rupiah
     final NumberFormat currencyFormat =
-    NumberFormat.currency(locale: 'id', symbol: 'Rp. ', decimalDigits: 0);
+        NumberFormat.currency(locale: 'id', symbol: 'Rp. ', decimalDigits: 0);
 
     // Format the order date to show only the date without the time
     final String formattedDate = DateFormat('dd MMM yyyy')
@@ -51,7 +52,12 @@ class DetailOrdersScreenView extends GetView<DetailOrdersController> {
       backgroundColor: kBackgroundColor,
       body: Obx(() {
         if (controller.isLoading.value) {
-          return Center(child: CircularProgressIndicator());
+          return Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(kPrimaryColor),
+              backgroundColor: kSecondaryColor,
+            ),
+          );
         } else {
           return SingleChildScrollView(
             padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 20),
@@ -87,7 +93,8 @@ class DetailOrdersScreenView extends GetView<DetailOrdersController> {
                 SizedBox(height: 10),
                 StatusDropdown(
                   statusOptions: controller.statusOptions,
-                  orderId: orderDetails.order.id, // Use the correct order ID
+                  orderId:
+                      orderDetails.orderHistoryId, // Use the correct order ID
                 ),
               ],
             ),

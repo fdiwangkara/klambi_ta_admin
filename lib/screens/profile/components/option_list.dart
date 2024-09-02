@@ -12,14 +12,12 @@ class OptionList extends StatelessWidget {
     // Icons for the options
     final List<IconData> optionIcons = [
       Icons.edit,
-      Icons.chat,
       Icons.attach_money,
       Icons.logout,
     ];
 
     final List<String> optionTitles = [
       "Edit Profile",
-      "Chat Dengan Customer",
       "Transaksi Masuk",
       "Logout",
     ];
@@ -27,24 +25,24 @@ class OptionList extends StatelessWidget {
     final List<Color> iconColors = [
       kPrimaryColor,
       kSecondaryColor,
-      kThirdColor,
       kDangerColor,
     ];
 
     final List<String> optionRoutes = [
       '/editProfile',
-      '/chat',
       '/transaction',
     ];
+
+    final ProfileController profileController = Get.find<ProfileController>();
 
     return Column(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(optionTitles.length, (index) {
         return GestureDetector(
           onTap: () {
-            if (index == 3) {
+            if (index == 2) {
               // Show confirmation dialog for logout
-              _showLogoutDialog(context);
+              _showConfirmationDialog(context, 'Konfirmasi Logout', 'Apakah anda yakin ingin Logout?', ()=> profileController.logout());
             } else {
               // Handle other options
               Get.offNamed(optionRoutes[index]);
@@ -81,32 +79,37 @@ class OptionList extends StatelessWidget {
     );
   }
 
-  void _showLogoutDialog(BuildContext context) {
+  void _showConfirmationDialog(BuildContext context, String title, String content, VoidCallback onConfirm) {
     showDialog(
-      context: context,
-      barrierDismissible: false, // Prevents closing dialog by tapping outside
-      builder: (BuildContext context) {
-        return AlertDialog(
-          title: const Text("Konfirmasi Logout"),
-          content: const Text("Yakin ingin keluar?"),
-          actions: <Widget>[
-            TextButton(
-              child: const Text("Tidak"),
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
+        context: context,
+        builder: (BuildContext context) {
+      return AlertDialog(
+        title: Text(title),
+        content: Text(content),
+        backgroundColor: kWhiteColor,
+        surfaceTintColor: kWhiteColor,
+        shadowColor: kBlackColor,
+        actions: [
+          TextButton(
+            onPressed: () => Navigator.of(context).pop(),
+            child: const Text(
+              'Batal',
+              style: TextStyle(color: kDangerColor),
             ),
-            TextButton(
-              child: const Text("Ya"),
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-                final ProfileController profileController = Get.find<ProfileController>();
-                profileController.logout();
-              },
+          ),
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop();
+              onConfirm();
+            },
+            child: const Text(
+              'Konfirmasi',
+              style: TextStyle(color: kSecondaryColor),
             ),
-          ],
-        );
-      },
+          ),
+        ],
+      );
+    },
     );
   }
 }

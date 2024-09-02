@@ -1,6 +1,3 @@
-// To parse this JSON data, do
-//
-//     final orderModel = orderModelFromJson(jsonString);
 
 import 'dart:convert';
 
@@ -33,35 +30,57 @@ class OrderModel {
 }
 
 class Datum {
+  int orderHistoryId;
   Order order;
   List<Product> products;
-  dynamic image;
+  Images? image;
 
   Datum({
+    required this.orderHistoryId,
     required this.order,
     required this.products,
     required this.image,
   });
 
   factory Datum.fromJson(Map<String, dynamic> json) => Datum(
+    orderHistoryId: json["order_history_id"],
     order: Order.fromJson(json["order"]),
     products: List<Product>.from(json["products"].map((x) => Product.fromJson(x))),
-    image: json["image"],
+    image: json["image"] == null ? null : Images.fromJson(json["image"]),
   );
 
   Map<String, dynamic> toJson() => {
+    "order_history_id": orderHistoryId,
     "order": order.toJson(),
     "products": List<dynamic>.from(products.map((x) => x.toJson())),
-    "image": image,
+    "image": image?.toJson(),
+  };
+}
+
+class Images {
+  String path;
+  String filename;
+
+  Images({
+    required this.path,
+    required this.filename,
+  });
+
+  factory Images.fromJson(Map<String, dynamic> json) => Images(
+    path: json["path"],
+    filename: json["filename"],
+  );
+
+  Map<String, dynamic> toJson() => {
+    "path": path,
+    "filename": filename,
   };
 }
 
 class Order {
   int id;
-  int orderId;
   int userId;
   int addressId;
-  String products;
   String status;
   int totalPrice;
   String paymentMethod;
@@ -69,17 +88,13 @@ class Order {
   int shippingFee;
   String shippingMethod;
   DateTime orderTime;
-  DateTime createdAt;
-  DateTime updatedAt;
   User user;
   Address address;
 
   Order({
     required this.id,
-    required this.orderId,
     required this.userId,
     required this.addressId,
-    required this.products,
     required this.status,
     required this.totalPrice,
     required this.paymentMethod,
@@ -87,18 +102,14 @@ class Order {
     required this.shippingFee,
     required this.shippingMethod,
     required this.orderTime,
-    required this.createdAt,
-    required this.updatedAt,
     required this.user,
     required this.address,
   });
 
   factory Order.fromJson(Map<String, dynamic> json) => Order(
     id: json["id"],
-    orderId: json["order_id"],
     userId: json["user_id"],
     addressId: json["address_id"],
-    products: json["products"],
     status: json["status"],
     totalPrice: json["total_price"],
     paymentMethod: json["payment_method"],
@@ -106,18 +117,14 @@ class Order {
     shippingFee: json["shipping_fee"],
     shippingMethod: json["shipping_method"],
     orderTime: DateTime.parse(json["order_time"]),
-    createdAt: DateTime.parse(json["created_at"]),
-    updatedAt: DateTime.parse(json["updated_at"]),
     user: User.fromJson(json["user"]),
     address: Address.fromJson(json["address"]),
   );
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "order_id": orderId,
     "user_id": userId,
     "address_id": addressId,
-    "products": products,
     "status": status,
     "total_price": totalPrice,
     "payment_method": paymentMethod,
@@ -125,8 +132,6 @@ class Order {
     "shipping_fee": shippingFee,
     "shipping_method": shippingMethod,
     "order_time": orderTime.toIso8601String(),
-    "created_at": createdAt.toIso8601String(),
-    "updated_at": updatedAt.toIso8601String(),
     "user": user.toJson(),
     "address": address.toJson(),
   };
@@ -182,7 +187,7 @@ class User {
   String email;
   dynamic emailVerifiedAt;
   dynamic apiToken;
-  dynamic image;
+  String? image;
   DateTime createdAt;
   DateTime updatedAt;
 
@@ -227,6 +232,7 @@ class Product {
   int price;
   String title;
   String image;
+  bool? fromCart;
 
   Product({
     required this.productId,
@@ -235,6 +241,7 @@ class Product {
     required this.price,
     required this.title,
     required this.image,
+    this.fromCart,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
@@ -244,6 +251,7 @@ class Product {
     price: json["price"],
     title: json["title"],
     image: json["image"],
+    fromCart: json["from_cart"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -253,5 +261,6 @@ class Product {
     "price": price,
     "title": title,
     "image": image,
+    "from_cart": fromCart,
   };
 }
