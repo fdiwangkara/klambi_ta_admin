@@ -43,6 +43,7 @@ dependencies:
   loading_animation_widget: ^1.2.1
   fl_downloader: ^2.0.2
   image_gallery_saver: ^2.0.3
+  image_downloader: ^0.31.0
 
 dev_dependencies:
   flutter_test:

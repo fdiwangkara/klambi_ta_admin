@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:image_downloader/image_downloader.dart';
 import '../../../../helper/constants.dart';
 import '../../../../models/order_response_model.dart';
 
@@ -10,9 +11,8 @@ class Design extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final double containerWidth = MediaQuery.of(context).size.width *
-        0.9; // Assuming 90% width for responsiveness
-    final double containerHeight = MediaQuery.of(context).size.width * 1.2;
+    final double containerWidth = MediaQuery.of(context).size.width * 0.9;
+    final double containerHeight = MediaQuery.of(context).size.width * 1.35;
 
     return Center(
       child: Container(
@@ -32,7 +32,6 @@ class Design extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  // Text above the product image
                   const Text(
                     "Produk Yang Dibeli",
                     style: TextStyle(
@@ -41,11 +40,10 @@ class Design extends StatelessWidget {
                       color: kBlackColor,
                     ),
                   ),
-                  const SizedBox(height: 10), // Space between text and image
+                  const SizedBox(height: 10),
 
                   Row(
                     children: [
-                      // Product Image
                       Image.network(
                         product.image,
                         width: MediaQuery.of(context).size.width / 3.5,
@@ -53,13 +51,11 @@ class Design extends StatelessWidget {
                         fit: BoxFit.cover,
                       ),
                       const SizedBox(width: 20),
-                      // Product Details
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          // Product Title
                           Container(
-                            width: 150, // Set the width of the text container
+                            width: 150,
                             child: Text(
                               product.title,
                               style: const TextStyle(
@@ -67,13 +63,11 @@ class Design extends StatelessWidget {
                                 fontWeight: FontWeight.w500,
                                 color: kBlackColor,
                               ),
-                              maxLines: 3, // Limit the text to 2 lines
-                              overflow: TextOverflow
-                                  .ellipsis, // Adds "..." if the text exceeds the number of lines
+                              maxLines: 3,
+                              overflow: TextOverflow.ellipsis,
                             ),
                           ),
                           const SizedBox(height: 5),
-                          // Product Size
                           Text(
                             'Size: ${product.size}',
                             style: const TextStyle(
@@ -82,7 +76,6 @@ class Design extends StatelessWidget {
                             ),
                           ),
                           const SizedBox(height: 5),
-                          // Product Quantity
                           Text(
                             'Quantity: ${product.quantity}',
                             style: const TextStyle(
@@ -94,20 +87,43 @@ class Design extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 20),
-                  Text(
+                  const SizedBox(height: 20),
+                  const Text(
                     'Design Pelanggan',
                     style: TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Image.network(
                     orderDetails.image!.path,
                     width: MediaQuery.of(context).size.width / 1.25,
                     height: MediaQuery.of(context).size.width / 2,
                     fit: BoxFit.cover,
+                  ),
+                  const SizedBox(height: 10),
+                  ElevatedButton.icon(
+                    onPressed: () async {
+                      try {
+                        // Download the image from the network
+                        var imageId = await ImageDownloader.downloadImage(orderDetails.image!.path);
+                        if (imageId == null) {
+                          return;
+                        }
+                        // Optionally, retrieve the file path
+                        var filePath = await ImageDownloader.findPath(imageId);
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Image downloaded successfully: $filePath")),
+                        );
+                      } catch (error) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          SnackBar(content: Text("Error downloading image: $error")),
+                        );
+                      }
+                    },
+                    icon: const Icon(Icons.download),
+                    label: const Text("Download Image"),
                   ),
                 ],
               ),

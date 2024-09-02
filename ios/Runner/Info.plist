@@ -55,5 +55,7 @@
     <true/>
     <key>UIFileSharingEnabled</key>
     <true/>
+    <key>UISupportDocumentBrowser</key>
+    <true/>
 </dict>
 </plist>

@@ -21,7 +21,7 @@ class EditProfileScreenView extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "Edit Profile",
-          style: TextStyle(fontFamily: "General Sans", fontSize: 16,)
+          style: TextStyle(fontFamily: "General Sans", fontSize: 20,)
         ),
         centerTitle: true,
         leading: GestureDetector(
