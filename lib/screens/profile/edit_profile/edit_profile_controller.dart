@@ -15,7 +15,7 @@ class EditProfileController extends GetxController {
   var imageUrl = Rxn<String>();
 
   var isLoading = false.obs;
-  var userProfile = UserProfile(name: '', email: '', image: '').obs;
+  var userProfile = UserProfile(username: '', image: '').obs;
 
   final TextEditingController ctrName = TextEditingController();
 
@@ -57,9 +57,9 @@ class EditProfileController extends GetxController {
       );
 
       if (response.statusCode == 200) {
-        var data = ShowProfileResponse.fromJson(jsonDecode(response.body)).data;
+        var data = ShowProfile.fromJson(jsonDecode(response.body)).data;
         userProfile.value = data;
-        ctrName.text = data.name;
+        ctrName.text = data.username;
         imageUrl.value = data.image;
       } else if (response.statusCode == 401) {
         Get.snackbar('Unauthorized', 'Please log in again.');
@@ -80,7 +80,7 @@ class EditProfileController extends GetxController {
 
 
 
-  Future<void> updateProfile(String name, File? imageFile) async {
+  Future<void> updateProfile(String username, File? imageFile) async {
     isLoading(true);
     var token = prefs.getString("token");
 
@@ -90,7 +90,7 @@ class EditProfileController extends GetxController {
     );
 
     request.headers['Authorization'] = 'Bearer $token';
-    request.fields['name'] = name;
+    request.fields['username'] = username;
 
     if (imageFile != null) {
       var imageStream = http.ByteStream(imageFile.openRead());
@@ -108,10 +108,9 @@ class EditProfileController extends GetxController {
 
     if (response.statusCode == 200) {
       var responseData = await http.Response.fromStream(response);
-      var updatedData = ShowProfileResponse.fromJson(jsonDecode(responseData.body)).data;
+      var updatedData = ShowProfile.fromJson(jsonDecode(responseData.body)).data;
       userProfile.value = UserProfile(
-        name: updatedData.name,
-        email: userProfile.value.email,
+        username: updatedData.username,
         image: updatedData.image, // This might be null, which is now acceptable
       );
     } else {

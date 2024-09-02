@@ -120,7 +120,7 @@ class EditProfileScreenView extends StatelessWidget {
                       ),
                       SizedBox(height: 5),
                       CustomTextFormField(
-                        hintText: controllerEdit.userProfile.value.name,
+                        hintText: controllerEdit.userProfile.value.username,
                         controller: controllerEdit.ctrName,
                       ),
                     ],

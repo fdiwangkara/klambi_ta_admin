@@ -28,6 +28,7 @@ class OrdersController extends GetxController {
       final response = await http.get(
         Uri.parse('https://klambi.ta.rplrus.com/api/order/history/index'),
       );
+      print(response.statusCode);
       if (response.statusCode == 200) {
         var jsonData = json.decode(response.body);
         OrderModel orderModel = OrderModel.fromJson(jsonData);
@@ -85,4 +86,27 @@ class OrdersController extends GetxController {
   void onStatusSelected(String status) {
     selectedStatus.value = status;
   }
+
+  Map<int, double> getWeeklySummary() {
+    Map<int, double> weeklySummary = {
+      0: 0.0,
+      1: 0.0,
+      2: 0.0,
+      3: 0.0,
+      4: 0.0,
+      5: 0.0,
+      6: 0.0,
+    };
+
+    for (var order in orders) {
+      if (order.order.status == 'pesanan_selesai') {
+        int day = order.order.orderTime.weekday % 7;  // Convert to 0-based (Sunday=0, ..., Saturday=6)
+        weeklySummary[day] = (weeklySummary[day] ?? 0) + order.order.totalPrice;
+      }
+    }
+
+    return weeklySummary;
+  }
+
 }
+

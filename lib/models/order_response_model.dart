@@ -1,3 +1,6 @@
+// To parse this JSON data, do
+//
+//     final orderModel = orderModelFromJson(jsonString);
 
 import 'dart:convert';
 
@@ -33,7 +36,7 @@ class Datum {
   int orderHistoryId;
   Order order;
   List<Product> products;
-  Images? image;
+  Images image;
 
   Datum({
     required this.orderHistoryId,
@@ -46,14 +49,14 @@ class Datum {
     orderHistoryId: json["order_history_id"],
     order: Order.fromJson(json["order"]),
     products: List<Product>.from(json["products"].map((x) => Product.fromJson(x))),
-    image: json["image"] == null ? null : Images.fromJson(json["image"]),
+    image: Images.fromJson(json["image"]),
   );
 
   Map<String, dynamic> toJson() => {
     "order_history_id": orderHistoryId,
     "order": order.toJson(),
     "products": List<dynamic>.from(products.map((x) => x.toJson())),
-    "image": image?.toJson(),
+    "image": image.toJson(),
   };
 }
 
@@ -183,20 +186,14 @@ class Address {
 
 class User {
   int id;
-  String name;
-  String email;
-  dynamic emailVerifiedAt;
-  dynamic apiToken;
-  String? image;
+  String username;
+  dynamic image;
   DateTime createdAt;
   DateTime updatedAt;
 
   User({
     required this.id,
-    required this.name,
-    required this.email,
-    required this.emailVerifiedAt,
-    required this.apiToken,
+    required this.username,
     required this.image,
     required this.createdAt,
     required this.updatedAt,
@@ -204,10 +201,7 @@ class User {
 
   factory User.fromJson(Map<String, dynamic> json) => User(
     id: json["id"],
-    name: json["name"],
-    email: json["email"],
-    emailVerifiedAt: json["email_verified_at"],
-    apiToken: json["api_token"],
+    username: json["username"],
     image: json["image"],
     createdAt: DateTime.parse(json["created_at"]),
     updatedAt: DateTime.parse(json["updated_at"]),
@@ -215,10 +209,7 @@ class User {
 
   Map<String, dynamic> toJson() => {
     "id": id,
-    "name": name,
-    "email": email,
-    "email_verified_at": emailVerifiedAt,
-    "api_token": apiToken,
+    "username": username,
     "image": image,
     "created_at": createdAt.toIso8601String(),
     "updated_at": updatedAt.toIso8601String(),
@@ -230,18 +221,18 @@ class Product {
   int quantity;
   String size;
   int price;
+  bool? fromCart;
   String title;
   String image;
-  bool? fromCart;
 
   Product({
     required this.productId,
     required this.quantity,
     required this.size,
     required this.price,
+    this.fromCart,
     required this.title,
     required this.image,
-    this.fromCart,
   });
 
   factory Product.fromJson(Map<String, dynamic> json) => Product(
@@ -249,9 +240,9 @@ class Product {
     quantity: json["quantity"],
     size: json["size"],
     price: json["price"],
+    fromCart: json["from_cart"],
     title: json["title"],
     image: json["image"],
-    fromCart: json["from_cart"],
   );
 
   Map<String, dynamic> toJson() => {
@@ -259,8 +250,8 @@ class Product {
     "quantity": quantity,
     "size": size,
     "price": price,
+    "from_cart": fromCart,
     "title": title,
     "image": image,
-    "from_cart": fromCart,
   };
 }

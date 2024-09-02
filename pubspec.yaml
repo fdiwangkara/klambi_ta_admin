@@ -41,6 +41,8 @@ dependencies:
   path_provider: ^2.1.4
   shimmer: ^3.0.0
   loading_animation_widget: ^1.2.1
+  fl_downloader: ^2.0.2
+  image_gallery_saver: ^2.0.3
 
 dev_dependencies:
   flutter_test:

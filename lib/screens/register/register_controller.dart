@@ -13,7 +13,6 @@ class RegisterController extends GetxController {
     try {
       isLoading.value = true;
       if (username.isEmpty ||
-          email.isEmpty ||
           password.isEmpty ||
           confirmPassword.isEmpty) {
         message.value = "Fields Tidak Boleh Kosong";
@@ -32,8 +31,7 @@ class RegisterController extends GetxController {
 
       final url = Uri.parse("https://klambi.ta.rplrus.com/api/admin/register");
       final body = {
-        "name": username,
-        "email": email,
+        "username": username,
         "password": password,
         "password_confirmation": confirmPassword,
       };
@@ -48,8 +46,7 @@ class RegisterController extends GetxController {
         // message.value = responseData.message;
 
         SharedPreferences prefs = await SharedPreferences.getInstance();
-        await prefs.setString('name', username);
-        await prefs.setString('email', email);
+        await prefs.setString('username', username);
         print(response.statusCode);
 
         isLoading.value = false;
@@ -70,6 +67,6 @@ class RegisterController extends GetxController {
 
   Future<bool> checkIfRegistered() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
-    return prefs.containsKey('username') && prefs.containsKey('email');
+    return prefs.containsKey('username');
   }
 }

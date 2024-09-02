@@ -33,25 +33,21 @@ class LoginAdmin {
 }
 
 class Data {
-  String name;
-  String email;
+  String username;
   String token;
 
   Data({
-    required this.name,
-    required this.email,
+    required this.username,
     required this.token,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    name: json["name"],
-    email: json["email"],
+    username: json["username"],
     token: json["token"],
   );
 
   Map<String, dynamic> toJson() => {
-    "name": name,
-    "email": email,
+    "username": username,
     "token": token,
   };
 }
