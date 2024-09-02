@@ -12,7 +12,6 @@ class StatusDropdown extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final controller = Get.find<DetailOrdersController>();
-
     return Obx(() {
       return Container(
         width: MediaQuery.of(context).size.width,
@@ -33,14 +32,16 @@ class StatusDropdown extends StatelessWidget {
             onChanged: (String? newValue) {
               if (newValue != null) {
                 controller.selectedStatus.value = newValue;
-                controller.updateOrderStatus(orderId); // Update order status immediately
+                controller.updateOrderStatus(orderId);// Update order status immediately
               }
             },
             items: statusOptions.map<DropdownMenuItem<String>>((String value) {
+              // Replace underscores with spaces and capitalize the text
+              final formattedValue = value.replaceAll('_', ' ').capitalize!;
               return DropdownMenuItem<String>(
                 value: value,
                 child: Text(
-                  value.capitalize!,
+                  formattedValue,
                   style: const TextStyle(fontSize: 16, color: kBlackColor),
                 ),
               );

@@ -30,53 +30,29 @@ class Header extends StatelessWidget {
             onTap: () {
               Get.offNamed('/profile'); // Replace '/profile' with the actual route name you want to navigate to
             },
-            child: CircleAvatar(
-              radius: 20, // Set the radius to 20
-              child: ClipOval(
-                child: editController.pickedImage.value != null
-                    ? Image.file(
-                  editController.pickedImage.value!,
-                  fit: BoxFit.cover,
-                  width: 40,
-                  height: 40,
-                )
-                    : editController.imageUrl.value != null
-                    ? Image.network(
-                  editController.imageUrl.value!,
-                  fit: BoxFit.cover,
-                  width: 40,
-                  height: 40,
-                  loadingBuilder: (context, child, progress) {
-                    if (progress == null) return child;
-                    return Shimmer.fromColors(
-                      baseColor: Colors.grey[300]!,
-                      highlightColor: Colors.grey[100]!,
-                      child: Container(
-                        width: 40,
-                        height: 40,
-                        color: Colors.grey[300],
-                      ),
-                    );
-                  },
-                  errorBuilder: (context, error, stackTrace) {
-                    return Shimmer.fromColors(
-                      baseColor: Colors.grey[300]!,
-                      highlightColor: Colors.grey[100]!,
-                      child: Container(
-                        width: 40,
-                        height: 40,
-                        color: Colors.grey[300],
-                      ),
-                    );
-                  },
-                )
-                    : Shimmer.fromColors(
-                  baseColor: Colors.grey[300]!,
-                  highlightColor: Colors.grey[100]!,
-                  child: Container(
-                    width: 40,
-                    height: 40,
-                    color: Colors.grey[300],
+            child: ClipOval(
+              child: AnimatedSwitcher(
+                duration: Duration(milliseconds: 300),
+                child: Container(
+                  height: 50,
+                  width: 50,
+                  key: ValueKey<String>(
+                      editController.imageUrl.value ?? ''),
+                  decoration: BoxDecoration(
+                    image: DecorationImage(
+                      image: editController.pickedImage.value !=
+                          null
+                          ? FileImage(
+                          editController.pickedImage.value!)
+                          : editController.imageUrl.value !=
+                          null
+                          ? NetworkImage(editController
+                          .imageUrl.value!)
+                          : AssetImage(
+                          "assets/images/dashboard/default_profile.png")
+                      as ImageProvider,
+                      fit: BoxFit.cover,
+                    ),
                   ),
                 ),
               ),

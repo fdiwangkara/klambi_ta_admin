@@ -16,7 +16,8 @@ class EditProductController extends GetxController {
   final stockController = TextEditingController();
 
   final RxString selectedCategory = ''.obs;
-  final RxBool isLoading = false.obs;
+  final RxBool isEditing = false.obs;  // Separate loading state for editing
+  final RxBool isDeleting = false.obs; // Separate loading state for deleting
   File? selectedImage;
 
   // Initialize the controller with the product data
@@ -47,10 +48,9 @@ class EditProductController extends GetxController {
       return;
     }
 
-    print(productId);
+    isEditing(true);
 
     final url = Uri.parse('https://klambi.ta.rplrus.com/api/products/$productId');
-    isLoading(true);
 
     try {
       var request = http.MultipartRequest('POST', url); // Send as a PUT request for updating
@@ -62,12 +62,6 @@ class EditProductController extends GetxController {
       request.fields['rate'] = '0';
       request.fields['stock'] = stockController.text;
 
-      print(titleController.text);
-      print(priceController.text);
-      print(descriptionController.text);
-      print(selectedCategory.value);
-      print(stockController.text);
-
       if (selectedImage != null) {
         final file = File(selectedImage!.path);
         final bytes = await file.readAsBytes();
@@ -75,7 +69,7 @@ class EditProductController extends GetxController {
         request.files.add(http.MultipartFile.fromBytes(
           'imagee',
           bytes,
-          filename: file.path.split('/').last, // opsional, untuk menambahkan nama file
+          filename: file.path.split('/').last, // optional, to add file name
         ));
       } else {
         final response = await http.get(Uri.parse("https://klambi.ta.rplrus.com/storage/" + imageController.text));
@@ -89,10 +83,9 @@ class EditProductController extends GetxController {
             filename: "tes",
           ));
         } else {
-          print('Gagal mendapatkan gambar dari URL');
+          print('Failed to get image from URL');
         }
       }
-
 
       final response = await request.send();
       final responseData = await response.stream.bytesToString();
@@ -104,7 +97,7 @@ class EditProductController extends GetxController {
           Get.snackbar('Success', 'Product updated successfully');
           Get.offNamed("/navbar", arguments: 1);
         } else {
-          Get.snackbar('Error', jsonResponse['message'] );
+          Get.snackbar('Error', jsonResponse['message']);
         }
       } else {
         final jsonResponse = json.decode(responseData);
@@ -114,21 +107,22 @@ class EditProductController extends GetxController {
       print(e.toString());
       Get.snackbar('Error', e.toString());
     } finally {
-      isLoading(false);
+      isEditing(false);
     }
   }
 
   Future<void> deleteProduct(int productId) async {
+    isDeleting(true);
+
     final url = Uri.parse('https://klambi.ta.rplrus.com/api/products/$productId');
-    isLoading(true);
 
     try {
       final response = await http.delete(url);
 
       if (response.statusCode == 200) {
         final jsonResponse = json.decode(response.body);
-          Get.offNamed("/navbar", arguments: 1);
-          Get.snackbar('Success', 'Product deleted successfully');
+        Get.offNamed("/navbar", arguments: 1);
+        Get.snackbar('Success', 'Product deleted successfully');
       } else {
         final jsonResponse = json.decode(response.body);
 
@@ -137,7 +131,7 @@ class EditProductController extends GetxController {
     } catch (e) {
       Get.snackbar('Error', e.toString());
     } finally {
-      isLoading(false);
+      isDeleting(false);
     }
   }
 

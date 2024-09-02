@@ -71,7 +71,7 @@ class DetailOrdersController extends GetxController {
     }
   }
 
-  Future<void> updateOrderStatus(int orderId) async {
+  Future<void> updateOrderStatus(int orderHistoryId) async {
     try {
       var token = prefs.getString("token");
       if (token == null) {
@@ -81,7 +81,7 @@ class DetailOrdersController extends GetxController {
 
       final response = await http.post(
         Uri.parse(
-            'https://klambi.ta.rplrus.com/api/order-history/$orderId/status'),
+            'https://klambi.ta.rplrus.com/api/order-history/$orderHistoryId/status'),
         headers: {
           "Content-Type": "application/json",
           'Authorization': 'Bearer $token',
@@ -93,7 +93,7 @@ class DetailOrdersController extends GetxController {
 
       if (response.statusCode == 200) {
         final order = orderData.value.data.firstWhere((order) =>
-        order.order.id == orderId);
+        order.orderHistoryId == orderHistoryId);
         order.order.status = selectedStatus.value;
         Get.offAndToNamed("/navbar", arguments: 2);
         Get.snackbar("Success", "Order status updated successfully");

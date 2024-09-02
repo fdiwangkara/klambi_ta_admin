@@ -20,6 +20,7 @@ class ProductCard extends StatelessWidget {
       return formatter.format(price);
     }
 
+
     return GestureDetector(
       onTap: () {
         Get.offNamed('/editProduct', arguments: product);

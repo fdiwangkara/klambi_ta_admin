@@ -13,6 +13,7 @@ class AddProductScreenView extends GetView<ProductController> {
     Get.put(AddProductController());
     return Scaffold(
       appBar: AppBar(
+        surfaceTintColor: kWhiteColor,
         backgroundColor: kBackgroundColor,
         leading: IconButton(
             onPressed: () {

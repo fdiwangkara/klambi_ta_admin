@@ -6,6 +6,7 @@ import 'package:klambi_admin/components/custom_textfield.dart';
 import 'package:klambi_admin/helper/constants.dart';
 import 'package:klambi_admin/screens/profile/edit_profile/edit_profile_controller.dart';
 import 'package:shimmer/shimmer.dart'; // Import shimmer package
+import 'package:loading_animation_widget/loading_animation_widget.dart';
 
 class EditProfileScreenView extends StatelessWidget {
   const EditProfileScreenView({super.key});
@@ -20,7 +21,7 @@ class EditProfileScreenView extends StatelessWidget {
       appBar: AppBar(
         title: Text(
           "Edit Profile",
-          style: TextStyle(fontFamily: "General Sans", fontSize: 20),
+          style: TextStyle(fontFamily: "General Sans", fontSize: 16,)
         ),
         centerTitle: true,
         leading: GestureDetector(
@@ -38,25 +39,49 @@ class EditProfileScreenView extends StatelessWidget {
             child: Container(
               padding: EdgeInsets.all(20),
               width: width * 0.98,
-              height: height, // Set the height of the container to the full height
               child: Column(
                 children: [
-                  CircleAvatar(
-                    radius: 50,
-                    backgroundImage: controllerEdit.pickedImage.value != null
-                        ? FileImage(controllerEdit.pickedImage.value!)
-                        : (controllerEdit.imageUrl.value != null
-                        ? NetworkImage(controllerEdit.imageUrl.value!)
-                        : AssetImage("assets/images/dashboard/profile_image.png")
-                    as ImageProvider),
+                  Container(
+                    width: width * 0.3,
+                    height: height * 0.155,
                     child: Stack(
                       children: [
+                        Obx(
+                              () => controllerEdit.pickedImage.value == null
+                              ? ClipOval(
+                            child: Container(
+                              height: 100,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: controllerEdit.imageUrl.value != null
+                                      ? NetworkImage(controllerEdit.imageUrl.value!)
+                                      : AssetImage("assets/images/dashboard/default_profile.png")
+                                  as ImageProvider,
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          )
+                              : ClipOval(
+                            child: Container(
+                              height: 100,
+                              width: 100,
+                              decoration: BoxDecoration(
+                                image: DecorationImage(
+                                  image: FileImage(controllerEdit.pickedImage.value!),
+                                  fit: BoxFit.cover,
+                                ),
+                              ),
+                            ),
+                          ),
+                        ),
                         Positioned(
                           bottom: 5,
                           right: 0,
                           child: Container(
-                            height: 30,
-                            width: 30,
+                            height: height * 0.05,
+                            width: width * 0.1,
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(50),
                               color: Colors.white,
@@ -75,7 +100,6 @@ class EditProfileScreenView extends StatelessWidget {
                               icon: Icon(
                                 Icons.camera_alt_outlined,
                                 color: kDarkGreyColor,
-                                size: 16,
                               ),
                             ),
                           ),
@@ -83,7 +107,7 @@ class EditProfileScreenView extends StatelessWidget {
                       ],
                     ),
                   ),
-                  SizedBox(height: 50), // Space between CircleAvatar and TextField
+                  SizedBox(height: 20),
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -94,36 +118,33 @@ class EditProfileScreenView extends StatelessWidget {
                           fontWeight: FontWeight.w500,
                         ),
                       ),
-                      SizedBox(height: 10), // Optional spacing between label and text field
-                      controllerEdit.adminProfile.value.name.isNotEmpty
-                          ? CustomTextFormField(
-                        hintText: controllerEdit.adminProfile.value.name,
+                      SizedBox(height: 5),
+                      CustomTextFormField(
+                        hintText: controllerEdit.userProfile.value.name,
                         controller: controllerEdit.ctrName,
-                      )
-                          : Shimmer.fromColors(
-                        baseColor: Colors.grey[300]!,
-                        highlightColor: Colors.grey[100]!,
-                        child: Container(
-                          width: double.infinity,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            color: Colors.grey[300],
-                            borderRadius: BorderRadius.circular(8),
-                          ),
-                        ),
                       ),
-                      SizedBox(height: 20), // Space between text field and button
                     ],
-                  ),// Push the button to the bottom
-                  CustomButton(
-                    onclick: () {
-                      controllerEdit.updateProfile(
-                        controllerEdit.ctrName.text,
-                        controllerEdit.pickedImage.value,
-                      );
-                      Get.offAllNamed("/navbar");
-                    },
-                    title: "Simpan",
+                  ),
+                  SizedBox(height: 20),
+                  Obx(
+                        () => controllerEdit.isLoading.value
+                        ? Center(
+                      child: LoadingAnimationWidget.discreteCircle(
+                        color: kPrimaryColor,
+                        size: 50,
+                        secondRingColor: kSecondaryColor,
+                      ),
+                    )
+                        : CustomButton(
+                      onclick: () {
+                        controllerEdit.updateProfile(
+                          controllerEdit.ctrName.text,
+                          controllerEdit.pickedImage.value,
+                        );
+                        Get.offAllNamed("/navbar");
+                      },
+                      title: "Simpan",
+                    ),
                   ),
                 ],
               ),

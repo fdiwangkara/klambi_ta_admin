@@ -19,11 +19,10 @@ class _LoginFormState extends State<LoginForm> {
   String? password;
   bool? remember = false;
   final List<String?> errors = [];
-  bool _obscureText = true;// State variable to manage password visibility
+  bool _obscureText = true; // State variable to manage password visibility
   final loginController = Get.put(LoginController());
   final TextEditingController ctrEmail = TextEditingController();
   final TextEditingController ctrPassword = TextEditingController();
-
 
   void addError({String? error}) {
     if (!errors.contains(error)) {
@@ -110,38 +109,29 @@ class _LoginFormState extends State<LoginForm> {
                 },
               ),
             ),
-            Row(
-              children: [
-                Checkbox(
-                  value: remember,
-                  activeColor: kSecondaryColor,
-                  onChanged: (value) {
-                    setState(() {
-                      remember = value;
-                    });
-                  },
-                ),
-                const Text("Ingat Saya"),
-                const Spacer(),
-                GestureDetector(
-                  onTap: () => () {},
-                  child: const Text(
-                    "Lupa password",
-                    style: TextStyle(decoration: TextDecoration.underline),
-                  ),
-                )
-              ],
-            ),
             FormError(errors: errors),
             const SizedBox(height: 25),
-            ElevatedButton(
-              onPressed: () {
-                loginController.loginAction(
-                  ctrEmail.text,
-                  ctrPassword.text,
-                );
+            Obx(() => ElevatedButton(
+              onPressed: loginController.isLoading.value
+                  ? null
+                  : () {
+                if (_formKey.currentState!.validate()) {
+                  loginController.loginAction(
+                    ctrEmail.text,
+                    ctrPassword.text,
+                  );
+                }
               },
-              child: const Text(
+              child: loginController.isLoading.value
+                  ? const SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 3.0,
+                  color: kWhiteColor,
+                ),
+              )
+                  : const Text(
                 "Masuk",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
@@ -149,7 +139,7 @@ class _LoginFormState extends State<LoginForm> {
                   color: kBlackColor,
                 ),
               ),
-            ),
+            )),
           ],
         ),
       ),

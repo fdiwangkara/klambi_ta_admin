@@ -51,6 +51,8 @@ class _RegisterFormState extends State<RegisterForm> {
     // Dispose the controllers when the widget is disposed
     ctrEmail.dispose();
     ctrPassword.dispose();
+    ctrConfirmPass.dispose();
+    ctrUsername.dispose();
     super.dispose();
   }
 
@@ -180,16 +182,29 @@ class _RegisterFormState extends State<RegisterForm> {
             ),
             FormError(errors: errors),
             const SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: () {
-                registerController.registerAction(
-                  ctrUsername.text,
-                  ctrEmail.text,
-                  ctrPassword.text,
-                  ctrConfirmPass.text,
-                );
+            Obx(() => ElevatedButton(
+              onPressed: registerController.isLoading.value
+                  ? null
+                  : () {
+                if (_formKey.currentState!.validate()) {
+                  registerController.registerAction(
+                    ctrUsername.text,
+                    ctrEmail.text,
+                    ctrPassword.text,
+                    ctrConfirmPass.text,
+                  );
+                }
               },
-              child: const Text(
+              child: registerController.isLoading.value
+                  ? const SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 3.0,
+                  color: kWhiteColor,
+                ),
+              )
+                  : const Text(
                 "Daftar",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
@@ -197,7 +212,7 @@ class _RegisterFormState extends State<RegisterForm> {
                   color: kBlackColor,
                 ),
               ),
-            ),
+            )),
           ],
         ),
       ),

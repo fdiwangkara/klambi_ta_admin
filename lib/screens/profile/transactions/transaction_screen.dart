@@ -11,6 +11,7 @@ class TransactionScreenView extends GetView<TransactionController> {
   @override
   Widget build(BuildContext context) {
     Get.put(TransactionController());
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: kBackgroundColor,
@@ -32,14 +33,24 @@ class TransactionScreenView extends GetView<TransactionController> {
         centerTitle: true,
       ),
       backgroundColor: kBackgroundColor,
-      body: SingleChildScrollView(
-        padding: const EdgeInsets.symmetric(vertical: 25),
-        child: Column(
-          children: [
-            TransactionList(),
-          ],
-        ),
-      ),
+      body: Obx(() {
+        if (controller.isLoading.value) {
+          return Center(
+            child: CircularProgressIndicator(
+              valueColor: AlwaysStoppedAnimation<Color>(kPrimaryColor),
+              backgroundColor: kSecondaryColor,
+            ),
+          );
+        }
+        return SingleChildScrollView(
+          padding: const EdgeInsets.symmetric(vertical: 25),
+          child: Column(
+            children: [
+              TransactionList(),
+            ],
+          ),
+        );
+      }),
     );
   }
 }

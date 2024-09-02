@@ -1,53 +1,31 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:klambi_admin/screens/profile/transactions/components/transaction_card.dart';
+import 'package:klambi_admin/screens/profile/transactions/transaction_controller.dart';
 
 class TransactionList extends StatelessWidget {
-  const TransactionList({super.key});
+  final TransactionController controller = Get.find<TransactionController>();
 
   @override
   Widget build(BuildContext context) {
-    final transactions = [
-      {
-        'icon': Icons.input,
-        'description': 'Salary Payment',
-        'dateTime': '2024-08-27 09:00',
-        'amount': '199.000',
-      },
-      {
-        'icon': Icons.money_off,
-        'description': 'Grocery Shopping',
-        'dateTime': '2024-08-26 15:30',
-        'amount': '200.000',
-      },
-      {
-        'icon': Icons.attach_money,
-        'description': 'Freelance Work',
-        'dateTime': '2024-08-25 10:00',
-        'amount': '120.000',
-      },
-    ];
+    final completedOrders = controller.getCompletedOrders();
 
-    return Column(
-      children: [
-        // Other widgets can go here
-        Container(
-          height: MediaQuery.of(context).size.height,
-            child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: transactions.length,
-            itemBuilder: (context, index) {
-              final transaction = transactions[index];
-              return TransactionCard(
-                icon: transaction['icon'] as IconData,
-                description: transaction['description'] as String,
-                dateTime: transaction['dateTime'] as String,
-                amount: transaction['amount'] as String,
-              );
-            },
-          )
-        ),
-      ],
+    if (completedOrders.isEmpty) {
+      return Center(child: Text('No Transactions History found.'));
+    }
+
+    return ListView.builder(
+      shrinkWrap: true,
+      itemCount: completedOrders.length,
+      itemBuilder: (context, index) {
+        final order = completedOrders[index];
+        return TransactionCard(
+          icon: Icons.input,
+          productName: order.products.map((product) => product.title).join(", "),
+          orderTime: order.order.orderTime,
+          totalPrice: order.order.totalPrice,
+        );
+      },
     );
   }
 }

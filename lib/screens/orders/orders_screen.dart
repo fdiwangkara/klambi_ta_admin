@@ -19,7 +19,8 @@ class OrdersScreenView extends GetView<OrdersController> {
           if (controller.isLoading.value) {
             return Center(
               child: CircularProgressIndicator(
-                color: kSecondaryColor,
+                valueColor: AlwaysStoppedAnimation<Color>(kPrimaryColor),
+                backgroundColor: kSecondaryColor,
               ),
             );
           } else {

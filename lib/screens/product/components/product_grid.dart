@@ -13,9 +13,7 @@ class ProductGrid extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 25),
       child: Obx(
-            () => productController.isLoading.value
-            ? Center(child: CircularProgressIndicator()) // Center the CircularProgressIndicator
-            : GridView.builder(
+            () => GridView.builder(
           shrinkWrap: true,
           physics: const NeverScrollableScrollPhysics(),
           gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
@@ -27,7 +25,8 @@ class ProductGrid extends StatelessWidget {
           itemCount: productController.productList.length,
           itemBuilder: (context, index) {
             return ProductCard(
-                product: productController.productList[index]);
+              product: productController.productList[index],
+            );
           },
         ),
       ),

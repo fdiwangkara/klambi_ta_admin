@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import '../../../../helper/constants.dart';
 import '../../../../models/order_response_model.dart';
@@ -11,7 +12,7 @@ class Design extends StatelessWidget {
   Widget build(BuildContext context) {
     final double containerWidth = MediaQuery.of(context).size.width *
         0.9; // Assuming 90% width for responsiveness
-    const double containerHeight = 300;
+    final double containerHeight = MediaQuery.of(context).size.width * 1.2;
 
     return Center(
       child: Container(
@@ -67,7 +68,8 @@ class Design extends StatelessWidget {
                                 color: kBlackColor,
                               ),
                               maxLines: 3, // Limit the text to 2 lines
-                              overflow: TextOverflow.ellipsis, // Adds "..." if the text exceeds the number of lines
+                              overflow: TextOverflow
+                                  .ellipsis, // Adds "..." if the text exceeds the number of lines
                             ),
                           ),
                           const SizedBox(height: 5),
@@ -99,7 +101,14 @@ class Design extends StatelessWidget {
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
                     ),
-                  )
+                  ),
+                  SizedBox(height: 10),
+                  Image.network(
+                    orderDetails.image!.path,
+                    width: MediaQuery.of(context).size.width / 1.25,
+                    height: MediaQuery.of(context).size.width / 2,
+                    fit: BoxFit.cover,
+                  ),
                 ],
               ),
             );

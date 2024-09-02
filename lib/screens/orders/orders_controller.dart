@@ -28,7 +28,6 @@ class OrdersController extends GetxController {
       final response = await http.get(
         Uri.parse('https://klambi.ta.rplrus.com/api/order/history/index'),
       );
-
       if (response.statusCode == 200) {
         var jsonData = json.decode(response.body);
         OrderModel orderModel = OrderModel.fromJson(jsonData);
@@ -44,9 +43,8 @@ class OrdersController extends GetxController {
   }
 
   List<Datum> get filteredOrders {
-    // Filter orders based on the selected status
     if (selectedStatus.value.isEmpty) {
-      return orders; // Return all orders if no status is selected
+      return orders;
     } else {
       return orders.where((order) => order.order.status == selectedStatus.value).toList();
     }
@@ -73,7 +71,7 @@ class OrdersController extends GetxController {
         StatusModel statusModel = StatusModel.fromJson(jsonData);
         statusList.value = statusModel.data;
         if (statusList.isNotEmpty) {
-          selectedStatus.value = statusList[0]; // Set the first status as the default selected
+          selectedStatus.value = statusList[0];
         }
         print('Status List: ${statusList.value}');
       } else {
@@ -85,6 +83,6 @@ class OrdersController extends GetxController {
   }
 
   void onStatusSelected(String status) {
-    selectedStatus.value = status; // Update the selected status
+    selectedStatus.value = status;
   }
 }

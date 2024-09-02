@@ -42,7 +42,7 @@ class ChatScreenView extends GetView<ChatController> {
           children: [
             SearchTextfields(),
             SizedBox(height: 20),
-            ChatCard(profileImageUrl: "http://via.placeholder.com/50x50", contactName: "contactName", latestMessage: "latestMessage", messageTime: "02:07")
+            ChatList(),
           ],
         ),
       ),

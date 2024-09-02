@@ -13,6 +13,8 @@ class OrderCard extends StatelessWidget {
   Widget build(BuildContext context) {
     final double width = MediaQuery.of(context).size.width;
     final double height = MediaQuery.of(context).size.height;
+    final status = order.order.status;
+    final formattedText = GetStringUtils(status.replaceAll('_', ' ')).capitalize!;
 
     // Create a NumberFormat object for Indonesian Rupiah
     final NumberFormat currencyFormat = NumberFormat.currency(locale: 'id', symbol: 'Rp. ', decimalDigits: 0);
@@ -76,7 +78,7 @@ class OrderCard extends StatelessWidget {
                           ),
                           const SizedBox(height: 5),
                           Text(
-                            'Order ID: #${order.order.orderId}',
+                            'Order ID: #${order.order.id}',
                             style: const TextStyle(
                               fontWeight: FontWeight.w500,
                               fontSize: 12,
@@ -108,7 +110,7 @@ class OrderCard extends StatelessWidget {
                             ),
                           ),
                           Text(
-                            'Status: ${order.order.status}',
+                            'Status: ${formattedText}',
                             style: const TextStyle(
                               color: kPrimaryColor,
                               fontWeight: FontWeight.w500,

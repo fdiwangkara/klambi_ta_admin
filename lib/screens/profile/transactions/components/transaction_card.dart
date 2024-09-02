@@ -1,30 +1,39 @@
 import 'package:flutter/material.dart';
 import 'package:klambi_admin/helper/constants.dart';
+import 'package:intl/intl.dart';
 
 class TransactionCard extends StatelessWidget {
   final IconData icon;
-  final String description;
-  final String dateTime;
-  final String amount;
-  final Color kBackgroundColor = Colors.white; // Replace with your actual color
-  final Color kLightGreyColor = Colors.grey; // Replace with your actual color
+  final String productName;
+  final DateTime orderTime;
+  final int totalPrice; // Changed to int for easier formatting
 
   const TransactionCard({
     Key? key,
     required this.icon,
-    required this.description,
-    required this.dateTime,
-    required this.amount,
+    required this.productName,
+    required this.orderTime,
+    required this.totalPrice,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    // Format the orderTime to show date and time (hours and minutes)
+    final String formattedTime = DateFormat('dd MMM yyyy, HH:mm').format(orderTime);
+
+    // Format the totalPrice to Indonesian Rupiah
+    final String formattedPrice = NumberFormat.currency(
+      locale: 'id_ID',
+      symbol: 'Rp. ',
+      decimalDigits: 0,
+    ).format(totalPrice);
+
     return Container(
       decoration: BoxDecoration(
         color: Colors.transparent,
         border: Border(
           bottom: BorderSide(
-            color: kSuperLightGreyColor,
+            color: kLightGreyColor,
             width: 1.0,
           ),
         ),
@@ -44,15 +53,15 @@ class TransactionCard extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  description,
+                  productName,
                   style: const TextStyle(
                     fontSize: 16,
-                    fontWeight: FontWeight.w600,
+                    fontWeight: FontWeight.w500,
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  dateTime,
+                  formattedTime, // Use formatted date and time here
                   style: const TextStyle(
                     fontSize: 14,
                     color: Colors.grey,
@@ -62,7 +71,7 @@ class TransactionCard extends StatelessWidget {
             ),
           ),
           Text(
-            '+ Rp $amount',
+            '+$formattedPrice', // Use formatted price here
             style: const TextStyle(
               fontSize: 16,
               fontWeight: FontWeight.w600,
