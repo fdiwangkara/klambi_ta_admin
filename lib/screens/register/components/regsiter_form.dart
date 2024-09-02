@@ -89,35 +89,6 @@ class _RegisterFormState extends State<RegisterForm> {
             Container(
               height: 70, // Increase the height to accommodate the error text
               child: CustomTextFormField(
-                controller: ctrEmail, // Add the email controller here
-                hintText: "Masukkan Email",
-                svgIcon: "assets/icons/email_icon.svg",
-                keyboardType: TextInputType.emailAddress,
-                onSaved: (newValue) => email = newValue,
-                onChanged: (value) {
-                  if (value.isNotEmpty) {
-                    removeError(error: kEmailNullError);
-                  } else if (emailValidatorRegExp.hasMatch(value)) {
-                    removeError(error: kInvalidEmailError);
-                  }
-                  return;
-                },
-                validator: (value) {
-                  if (value!.isEmpty) {
-                    addError(error: kEmailNullError);
-                    return "";
-                  } else if (!emailValidatorRegExp.hasMatch(value)) {
-                    addError(error: kInvalidEmailError);
-                    return "";
-                  }
-                  return null;
-                },
-              ),
-            ),
-            const SizedBox(height: 10),
-            Container(
-              height: 70, // Increase the height to accommodate the error text
-              child: CustomTextFormField(
                 controller: ctrPassword, // Add the password controller here
                 hintText: "Masukkan Password",
                 svgIcon: "assets/icons/lock_icon.svg",

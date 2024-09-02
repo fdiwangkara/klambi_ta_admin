@@ -42,6 +42,18 @@ class TransactionScreenView extends GetView<TransactionController> {
             ),
           );
         }
+
+        final completedOrders = controller.getCompletedOrders();
+
+        if (completedOrders.isEmpty) {
+          return Center(
+            child: Text(
+              'No Transactions History found.',
+              style: TextStyle(fontSize: 14, color: kBlackColor),
+            ),
+          );
+        }
+
         return SingleChildScrollView(
           padding: const EdgeInsets.symmetric(vertical: 25),
           child: Column(

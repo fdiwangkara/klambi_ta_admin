@@ -21,7 +21,7 @@ class _LoginFormState extends State<LoginForm> {
   final List<String?> errors = [];
   bool _obscureText = true; // State variable to manage password visibility
   final loginController = Get.put(LoginController());
-  final TextEditingController ctrEmail = TextEditingController();
+  final TextEditingController ctrUsername = TextEditingController();
   final TextEditingController ctrPassword = TextEditingController();
 
   void addError({String? error}) {
@@ -51,24 +51,19 @@ class _LoginFormState extends State<LoginForm> {
             Container(
               height: 70, // Increase the height to accommodate the error text
               child: CustomTextFormField(
-                hintText: "Masukkan Email",
-                svgIcon: "assets/icons/email_icon.svg",
-                keyboardType: TextInputType.emailAddress,
-                controller: ctrEmail,
+                hintText: "Masukkan Username",
+                svgIcon: "assets/icons/person_icon.svg",
+                keyboardType: TextInputType.text,
+                controller: ctrUsername,
                 onChanged: (value) {
                   if (value.isNotEmpty) {
-                    removeError(error: kEmailNullError);
-                  } else if (emailValidatorRegExp.hasMatch(value)) {
-                    removeError(error: kInvalidEmailError);
+                    removeError(error: kNamelNullError);
                   }
                   return;
                 },
                 validator: (value) {
                   if (value!.isEmpty) {
-                    addError(error: kEmailNullError);
-                    return "";
-                  } else if (!emailValidatorRegExp.hasMatch(value)) {
-                    addError(error: kInvalidEmailError);
+                    addError(error: kNamelNullError);
                     return "";
                   }
                   return null;
@@ -117,7 +112,7 @@ class _LoginFormState extends State<LoginForm> {
                   : () {
                 if (_formKey.currentState!.validate()) {
                   loginController.loginAction(
-                    ctrEmail.text,
+                    ctrUsername.text,
                     ctrPassword.text,
                   );
                 }

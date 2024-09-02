@@ -22,10 +22,10 @@ class LoginController extends GetxController {
     prefs = await SharedPreferences.getInstance();
   }
 
-  Future<void> loginAction(String email, String password) async {
+  Future<void> loginAction(String username, String password) async {
     print('LOGIN...');
 
-    if (email.isEmpty || password.isEmpty) {
+    if (username.isEmpty || password.isEmpty) {
       message.value = "Field Tidak Boleh Kosong";
       Get.snackbar("Oops!", message.value);
       return;
@@ -34,7 +34,7 @@ class LoginController extends GetxController {
       isLoading.value = true;
 
       final url = Uri.parse("https://klambi.ta.rplrus.com/api/admin/login");
-      final body = {"email": email, "password": password};
+      final body = {"username": username, "password": password};
 
       final response = await http.post(
         Uri.parse("https://klambi.ta.rplrus.com/api/admin/login"),
@@ -46,8 +46,7 @@ class LoginController extends GetxController {
         LoginAdmin loginResponseModel = loginAdminFromJson(response.body);
         loginAdminFromJson(response.body);
 
-        await prefs.setString("username", loginResponseModel.data.name);
-        await prefs.setString("email", loginResponseModel.data.email);
+        await prefs.setString("username", loginResponseModel.data.username);
         await prefs.setString("token", loginResponseModel.data.token);
 
         String? savedToken = await prefs.getString("token");

@@ -27,7 +27,6 @@ class HomeScreenView extends GetView<HomeController> {
               InformationScroll(),
               SizedBox(height: 20),
               StockContainer(),
-              SizedBox(height: 20),
               ChartGraph(),
             ],
           ),

@@ -50,9 +50,7 @@ class AccountInfo extends StatelessWidget {
               ),
             ),
             SizedBox(height: 10),
-            usernameText(username: editController.userProfile.value.name),
-            // Email
-            emailText(email: profileController.email.value),
+            usernameText(username: editController.userProfile.value.username),
           ],
         ),
       );

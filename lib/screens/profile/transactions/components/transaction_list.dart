@@ -10,10 +10,6 @@ class TransactionList extends StatelessWidget {
   Widget build(BuildContext context) {
     final completedOrders = controller.getCompletedOrders();
 
-    if (completedOrders.isEmpty) {
-      return Center(child: Text('No Transactions History found.'));
-    }
-
     return ListView.builder(
       shrinkWrap: true,
       itemCount: completedOrders.length,

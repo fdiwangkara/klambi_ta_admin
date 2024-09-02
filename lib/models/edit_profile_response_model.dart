@@ -33,21 +33,21 @@ class EditModel {
 }
 
 class Data {
-  String name;
+  String username;
   dynamic image;
 
   Data({
-    required this.name,
+    required this.username,
     required this.image,
   });
 
   factory Data.fromJson(Map<String, dynamic> json) => Data(
-    name: json["name"],
+    username: json["username"],
     image: json["image"],
   );
 
   Map<String, dynamic> toJson() => {
-    "name": name,
+    "username": username,
     "image": image,
   };
 }
