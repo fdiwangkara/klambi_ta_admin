@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:klambi_admin/components/custom_icon.dart';
-import '../../../components/form_error.dart';
+import 'package:klambi_admin/components/form_error.dart';
+import 'package:klambi_admin/components/custom_textfield.dart';
 import '../../../helper/constants.dart';
 import '../../../helper/keyboard.dart';
+import '../login_controller.dart';
 
 class LoginForm extends StatefulWidget {
   const LoginForm({super.key});
@@ -19,6 +20,9 @@ class _LoginFormState extends State<LoginForm> {
   bool? remember = false;
   final List<String?> errors = [];
   bool _obscureText = true; // State variable to manage password visibility
+  final loginController = Get.put(LoginController());
+  final TextEditingController ctrUsername = TextEditingController();
+  final TextEditingController ctrPassword = TextEditingController();
 
   void addError({String? error}) {
     if (!errors.contains(error)) {
@@ -46,46 +50,34 @@ class _LoginFormState extends State<LoginForm> {
           children: [
             Container(
               height: 70, // Increase the height to accommodate the error text
-              child: TextFormField(
-                keyboardType: TextInputType.emailAddress,
-                onSaved: (newValue) => email = newValue,
+              child: CustomTextFormField(
+                hintText: "Masukkan Username",
+                svgIcon: "assets/icons/person_icon.svg",
+                keyboardType: TextInputType.text,
+                controller: ctrUsername,
                 onChanged: (value) {
                   if (value.isNotEmpty) {
-                    removeError(error: kEmailNullError);
-                  } else if (emailValidatorRegExp.hasMatch(value)) {
-                    removeError(error: kInvalidEmailError);
+                    removeError(error: kNamelNullError);
                   }
                   return;
                 },
                 validator: (value) {
                   if (value!.isEmpty) {
-                    addError(error: kEmailNullError);
-                    return "";
-                  } else if (!emailValidatorRegExp.hasMatch(value)) {
-                    addError(error: kInvalidEmailError);
+                    addError(error: kNamelNullError);
                     return "";
                   }
                   return null;
                 },
-                decoration: const InputDecoration(
-                  contentPadding: EdgeInsets.all(16),
-                  hintText: "Masukkan Email",
-                  hintStyle: TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                    color: kDarkGreyColor,
-                  ),
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
-                  prefixIcon: CustomIcon(svgIcon: "assets/icons/email_icon.svg"),
-                ),
               ),
             ),
             const SizedBox(height: 10),
             Container(
               height: 70, // Increase the height to accommodate the error text
-              child: TextFormField(
+              child: CustomTextFormField(
+                hintText: "Masukkan Password",
+                svgIcon: "assets/icons/lock_icon.svg",
                 obscureText: _obscureText,
-                onSaved: (newValue) => password = newValue,
+                controller: ctrPassword,
                 onChanged: (value) {
                   if (value.isNotEmpty) {
                     removeError(error: kPassNullError);
@@ -104,64 +96,37 @@ class _LoginFormState extends State<LoginForm> {
                   }
                   return null;
                 },
-                decoration: InputDecoration(
-                  contentPadding: const EdgeInsets.all(16),
-                  hintText: "Masukkan Password",
-                  hintStyle: const TextStyle(
-                    fontWeight: FontWeight.w500,
-                    fontSize: 16,
-                    color: kDarkGreyColor,
-                  ),
-                  floatingLabelBehavior: FloatingLabelBehavior.always,
-                  prefixIcon: const CustomIcon(svgIcon: "assets/icons/lock_icon.svg"),
-                  suffixIcon: GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        _obscureText = !_obscureText;
-                      });
-                    },
-                    child: CustomIcon(
-                      svgIcon: _obscureText
-                          ? "assets/icons/eye_off_icon.svg"
-                          : "assets/icons/eye_on_icon.svg",
-                    ),
-                  ),
-                ),
+                hasSuffixIcon: true,
+                onSuffixIconTap: () {
+                  setState(() {
+                    _obscureText = !_obscureText;
+                  });
+                },
               ),
-            ),
-            Row(
-              children: [
-                Checkbox(
-                  value: remember,
-                  activeColor: kSecondaryColor,
-                  onChanged: (value) {
-                    setState(() {
-                      remember = value;
-                    });
-                  },
-                ),
-                const Text("Ingat Saya"),
-                const Spacer(),
-                GestureDetector(
-                  onTap: () => () {},
-                  child: const Text(
-                    "Lupa password",
-                    style: TextStyle(decoration: TextDecoration.underline),
-                  ),
-                )
-              ],
             ),
             FormError(errors: errors),
             const SizedBox(height: 25),
-            ElevatedButton(
-              onPressed: () {
+            Obx(() => ElevatedButton(
+              onPressed: loginController.isLoading.value
+                  ? null
+                  : () {
                 if (_formKey.currentState!.validate()) {
-                  _formKey.currentState!.save();
-                  KeyboardUtil.hideKeyboard(context);
-                  Get.offNamed('/home');
+                  loginController.loginAction(
+                    ctrUsername.text,
+                    ctrPassword.text,
+                  );
                 }
               },
-              child: const Text(
+              child: loginController.isLoading.value
+                  ? const SizedBox(
+                height: 20,
+                width: 20,
+                child: CircularProgressIndicator(
+                  strokeWidth: 3.0,
+                  color: kWhiteColor,
+                ),
+              )
+                  : const Text(
                 "Masuk",
                 style: TextStyle(
                   fontWeight: FontWeight.w600,
@@ -169,7 +134,7 @@ class _LoginFormState extends State<LoginForm> {
                   color: kBlackColor,
                 ),
               ),
-            ),
+            )),
           ],
         ),
       ),
